@@ -3,7 +3,7 @@ import Image from "next/image"
 export function KWLogo() {
   return (
     <Image
-      src="/images/kw-logo.png"
+      src="/images/kw-logo.webp"
       alt="Kitchen Warehouse"
       width={160}
       height={44}
