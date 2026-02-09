@@ -45,7 +45,7 @@ export function generateReportIndex(): YearGroup[] {
 
   const years: YearGroup[] = []
 
-  for (let y = currentISOYear; y >= currentISOYear - 1; y--) {
+  for (let y = currentISOYear; y >= currentISOYear; y--) {
     const maxWeek = y === currentISOYear ? currentISOWeek : getISOWeeksInYear(y)
     const monthMap = new Map<string, WeekEntry[]>()
 
@@ -53,6 +53,11 @@ export function generateReportIndex(): YearGroup[] {
       const { start, end } = getWeekDateRange(y, w)
       const monthName = format(start, "MMMM")
       const monthIdx = start.getMonth()
+
+      // Skip January and December
+      if (monthIdx === 0 || monthIdx === 11) {
+        continue
+      }
 
       const entry: WeekEntry = {
         year: y,
