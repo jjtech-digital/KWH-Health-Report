@@ -30,8 +30,8 @@ export interface YearGroup {
 }
 
 export function getWeekDateRange(year: number, week: number) {
-  const jan4 = new Date(year, 0, 4)
-  const startOfFirstWeek = startOfWeek(jan4, { weekStartsOn: 1 })
+  const feb2 = new Date(year, 1, 2) // February 2nd as base date
+  const startOfFirstWeek = startOfWeek(feb2, { weekStartsOn: 1 })
   const weekStart = addWeeks(startOfFirstWeek, week - 1)
   const weekEnd = endOfWeek(weekStart, { weekStartsOn: 1 })
 
