@@ -19,8 +19,8 @@ export const healthData = [
       ],
     },
     reliability: {
-      failed_requests: 124,
-      error_rate: '0.08%',
+      failed_requests: 352,
+      error_rate: '0.0550%',
       top_failed_pages: [
         {
           path: '/status/extensionrunner', failures: 167, status: 500 },
