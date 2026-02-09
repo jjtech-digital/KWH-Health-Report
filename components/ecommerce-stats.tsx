@@ -1,21 +1,30 @@
 import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react"
 import { healthData } from "@/lib/data"
 
-export function EcommerceStats() {
-  const { total_orders, payment_failures_approved, payment_failures_declined, active_carts } = healthData[0].ecommerce
+export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
+  const { total_orders, payment_failures_declined, payment_failures_approved, active_carts } =
+    healthData?.find((data) => data?.week_number === weekNumber)?.ecommerce || {};
 
   const stats = [
     {
       label: "Total Orders",
-      value: total_orders.toLocaleString(),
+      value: total_orders?.toLocaleString(),
       icon: ShoppingBag,
       iconColor: "text-primary",
       iconBg: "bg-primary/10",
       valueColor: "text-card-foreground",
     },
     {
-      label: "Payment Failures",
-      value: payment_failures_approved.toLocaleString(),
+      label: "Payment Failures Declined",
+      value: payment_failures_declined?.toLocaleString(),
+      icon: AlertTriangle,
+      iconColor: "text-[hsl(var(--destructive))]",
+      iconBg: "bg-[hsl(var(--destructive))]/10",
+      valueColor: "text-[hsl(var(--destructive))]",
+    },
+    {
+      label: "Payment Failures Approved",
+      value: payment_failures_approved?.toLocaleString(),
       icon: AlertTriangle,
       iconColor: "text-[hsl(var(--destructive))]",
       iconBg: "bg-[hsl(var(--destructive))]/10",
@@ -23,13 +32,13 @@ export function EcommerceStats() {
     },
     {
       label: "Active Carts",
-      value: active_carts.toLocaleString(),
+      value: active_carts?.toLocaleString(),
       icon: ShoppingCart,
       iconColor: "text-[hsl(var(--success))]",
       iconBg: "bg-[hsl(var(--success))]/10",
       valueColor: "text-card-foreground",
     },
-  ]
+  ];
 
   return (
     <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -50,5 +59,5 @@ export function EcommerceStats() {
         </div>
       ))}
     </section>
-  )
+  );
 }

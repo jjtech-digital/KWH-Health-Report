@@ -1,7 +1,7 @@
 import { Users, UserPlus, UserCheck, ShoppingBag, TrendingUp, PercentIcon } from "lucide-react"
 import { healthData } from "@/lib/data"
 
-export function CustomerOrders() {
+export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
   const {
     first_time_buyers,
     returning_customers,
@@ -9,12 +9,12 @@ export function CustomerOrders() {
     registered_user_orders,
     total_registered_users,
     conversion_rate,
-  } = healthData[0].customers
+  } = healthData?.find((data) => data?.week_number === weekNumber)?.customers || {}
 
   const stats = [
     {
       label: "New Customers",
-      value: first_time_buyers.toLocaleString(),
+      value: first_time_buyers?.toLocaleString(),
       description: "First-time buyers this week",
       icon: UserPlus,
       iconColor: "text-primary",
@@ -22,7 +22,7 @@ export function CustomerOrders() {
     },
     {
       label: "Returning Customers",
-      value: returning_customers.toLocaleString(),
+      value: returning_customers?.toLocaleString(),
       description: "Repeat purchases this week",
       icon: UserCheck,
       iconColor: "text-[hsl(var(--success))]",
@@ -30,7 +30,7 @@ export function CustomerOrders() {
     },
     {
       label: "Guest Checkouts",
-      value: guest_checkouts.toLocaleString(),
+      value: guest_checkouts?.toLocaleString(),
       description: "Orders without an account",
       icon: Users,
       iconColor: "text-[hsl(var(--warning))]",
@@ -38,7 +38,7 @@ export function CustomerOrders() {
     },
     {
       label: "Registered User Orders",
-      value: registered_user_orders.toLocaleString(),
+      value: registered_user_orders?.toLocaleString(),
       description: "Orders by logged-in users",
       icon: ShoppingBag,
       iconColor: "text-primary",
@@ -46,7 +46,7 @@ export function CustomerOrders() {
     },
     {
       label: "Total Registered Users",
-      value: total_registered_users.toLocaleString(),
+      value: total_registered_users?.toLocaleString(),
       description: "Active accounts on platform",
       icon: TrendingUp,
       iconColor: "text-[hsl(var(--success))]",

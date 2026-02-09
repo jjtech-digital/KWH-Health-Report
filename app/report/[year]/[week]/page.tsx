@@ -14,7 +14,7 @@ export default async function ReportPage({
   params: Promise<{ year: string; week: string }>
 }) {
   const { year, week } = await params
-  const weekNum = parseInt(week.replace("w", ""), 10)
+  const weekNum = parseInt(week.replace("w", ""), 10);
   const { start, end } = getWeekDateRange(parseInt(year, 10), weekNum)
 
   const formattedRange = `${start.toLocaleDateString("en-AU", {
@@ -70,15 +70,15 @@ export default async function ReportPage({
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-3">
-            <TrafficOverview />
+            <TrafficOverview weekNumber={weekNum} />
           </div>
           <div className="lg:col-span-2">
-            <SystemHealth />
+            <SystemHealth weekNumber={weekNum} />
           </div>
         </div>
-        <CustomerOrders />
-        <EcommerceStats />
-        <WebVitals />
+        <CustomerOrders weekNumber={weekNum} />
+        <EcommerceStats weekNumber={weekNum} />
+        <WebVitals weekNumber={weekNum} />
       </div>
     </main>
   )

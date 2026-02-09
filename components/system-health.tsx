@@ -1,8 +1,8 @@
 import { ShieldAlert } from "lucide-react"
 import { healthData } from "@/lib/data"
 
-export function SystemHealth() {
-  const { failed_requests, error_rate, top_failed_pages } = healthData[0].reliability
+export function SystemHealth({weekNumber}: Readonly<{weekNumber: number}>) {
+  const { failed_requests, error_rate, top_failed_pages } = healthData?.find((data) => data?.week_number === weekNumber)?.reliability || { failed_requests: 0, error_rate: "0%", top_failed_pages: [] };
   const hasFailures = failed_requests > 0
   const maxFailures = top_failed_pages.length > 0 ? top_failed_pages[0].failures : 1
 
@@ -68,7 +68,7 @@ export function SystemHealth() {
                     </span>
                   </div>
                 </div>
-                <div className="relative h-1.5 w-full rounded-full bg-muted overflow-hidden ml-6">
+                <div className="relative h-1.5 w-100 rounded-full bg-muted overflow-hidden ml-6">
                   <div
                     className="absolute inset-y-0 left-0 rounded-full bg-destructive/60"
                     style={{ width: `${(page.failures / maxFailures) * 100}%` }}

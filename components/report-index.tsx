@@ -82,7 +82,7 @@ function MonthSection({ monthGroup, year, defaultOpen }: { monthGroup: MonthGrou
 export function ReportIndex({ data }: { data: YearGroup[] }) {
   const [activeYear, setActiveYear] = useState(data[0]?.year ?? new Date().getFullYear())
   const activeData = data.find((y) => y.year === activeYear)
-
+  
   return (
     <div className="flex flex-col gap-6">
       {/* Year tabs */}

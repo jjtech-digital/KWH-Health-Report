@@ -1,5 +1,6 @@
 export const healthData = [
   {
+    week_number: 1,
     traffic: {
       total_views: 640465,
       top_pages: [
