@@ -25,9 +25,9 @@ export const healthData = [
         {
           path: '/status/extensionrunner', failures: 167, status: 500 },
         { path: '/checkout/validatestock', failures: 163, status: 400 },
+        { path: '/frontastic/page', failures: 11, status: 503 },
         { path: '/ct-auth/getAnonymousAccessToken', failures: 7, status: 500 },
         { path: '/products/list', failures: 4, status: 500 },
-        { path: '/frontastic/page', failures: 11, status: 503 },
       ],
     },
     ecommerce: {
