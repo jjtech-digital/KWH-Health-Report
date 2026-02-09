@@ -22,29 +22,29 @@ function getVitalStatus(metric: string, value: string): { color: string; label: 
   }
 }
 
-export function WebVitals() {
-  const vitals = healthData[0].web_vitals
+export function WebVitals({weekNumber}: Readonly<{weekNumber: number}>) {
+  const vitals = healthData?.find((data) => data?.week_number === weekNumber)?.web_vitals;
 
   const metrics = [
     {
       key: "lcp",
       label: "LCP",
       description: "Largest Contentful Paint",
-      value: vitals.lcp,
+      value: vitals?.lcp,
       threshold: "< 2.5s",
     },
     {
       key: "fid",
       label: "FID",
       description: "First Input Delay",
-      value: vitals.fid,
+      value: vitals?.fid,
       threshold: "< 100ms",
     },
     {
       key: "cls",
       label: "CLS",
       description: "Cumulative Layout Shift",
-      value: vitals.cls,
+      value: vitals?.cls,
       threshold: "< 0.1",
     },
   ]
@@ -59,7 +59,7 @@ export function WebVitals() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {metrics.map((metric) => {
-          const status = getVitalStatus(metric.key, metric.value)
+          const status = getVitalStatus(metric.key, metric.value || "")
           return (
             <div
               key={metric.key}

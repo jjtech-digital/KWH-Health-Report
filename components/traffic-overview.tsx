@@ -10,8 +10,8 @@ const BROWSER_COLORS: Record<string, string> = {
   Other: "bg-muted-foreground",
 }
 
-export function TrafficOverview() {
-  const { total_views, top_pages, browsers } = healthData[0].traffic
+export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
+  const { total_views, top_pages, browsers } = healthData?.find((data) => data?.week_number === weekNumber)?.traffic || { total_views: 0, top_pages: [], browsers: [] };
   const maxViews = top_pages[0]?.views ?? 1
 
   return (

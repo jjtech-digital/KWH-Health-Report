@@ -4,7 +4,6 @@ import { generateReportIndex } from "@/lib/weeks"
 
 export default function Home() {
   const data = generateReportIndex()
-
   return (
     <main className="min-h-screen bg-background">
       <header className="bg-card border-b border-border">

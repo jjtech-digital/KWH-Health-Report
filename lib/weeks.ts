@@ -51,6 +51,12 @@ export function generateReportIndex(): YearGroup[] {
 
     for (let w = 1; w <= maxWeek; w++) {
       const { start, end } = getWeekDateRange(y, w)
+      
+      // Only add the week if the current day has passed it
+      if (now <= end) {
+        continue
+      }
+      
       const monthName = format(start, "MMMM")
       const monthIdx = start.getMonth()
 
@@ -79,6 +85,13 @@ export function generateReportIndex(): YearGroup[] {
     const months: MonthGroup[] = []
     for (const [key, weeks] of monthMap) {
       const [idxStr, month] = key.split("-")
+      
+      // Sort weeks by start date and renumber starting from 1 for each month
+      weeks.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
+      weeks.forEach((week, index) => {
+        week.week = index + 1
+      })
+      
       months.push({
         month,
         monthIndex: parseInt(idxStr, 10),
