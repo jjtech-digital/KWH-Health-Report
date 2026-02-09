@@ -3,18 +3,18 @@ import { healthData } from "@/lib/data"
 
 export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
   const {
-    first_time_buyers,
-    returning_customers,
-    guest_checkouts,
-    registered_user_orders,
-    total_registered_users,
-    conversion_rate,
+    first_time_buyers = 0,
+    returning_customers = 0,
+    guest_checkouts = 0,
+    registered_user_orders = 0,
+    total_registered_users = 0,
+    conversion_rate = '—',
   } = healthData?.find((data) => data?.week_number === weekNumber)?.customers || {}
 
   const stats = [
     {
       label: "New Customers",
-      value: first_time_buyers?.toLocaleString(),
+      value: first_time_buyers.toLocaleString(),
       description: "First-time buyers this week",
       icon: UserPlus,
       iconColor: "text-primary",
@@ -22,7 +22,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
     },
     {
       label: "Returning Customers",
-      value: returning_customers?.toLocaleString(),
+      value: returning_customers.toLocaleString(),
       description: "Repeat purchases this week",
       icon: UserCheck,
       iconColor: "text-[hsl(var(--success))]",
@@ -30,7 +30,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
     },
     {
       label: "Guest Checkouts",
-      value: guest_checkouts?.toLocaleString(),
+      value: guest_checkouts.toLocaleString(),
       description: "Orders without an account",
       icon: Users,
       iconColor: "text-[hsl(var(--warning))]",
@@ -38,7 +38,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
     },
     {
       label: "Registered User Orders",
-      value: registered_user_orders?.toLocaleString(),
+      value: registered_user_orders.toLocaleString(),
       description: "Orders by logged-in users",
       icon: ShoppingBag,
       iconColor: "text-primary",
@@ -46,7 +46,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
     },
     {
       label: "Total Registered Users",
-      value: total_registered_users?.toLocaleString(),
+      value: total_registered_users.toLocaleString(),
       description: "Active accounts on platform",
       icon: TrendingUp,
       iconColor: "text-[hsl(var(--success))]",

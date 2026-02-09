@@ -2,8 +2,12 @@ import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react"
 import { healthData } from "@/lib/data"
 
 export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
-  const { total_orders, payment_failures_declined, payment_failures_approved, active_carts } =
-    healthData?.find((data) => data?.week_number === weekNumber)?.ecommerce || {};
+  const {
+    total_orders = 0,
+    payment_failures_declined = 0,
+    payment_failures_approved = 0,
+    active_carts = 0,
+  } = healthData?.find((data) => data?.week_number === weekNumber)?.ecommerce ?? {};
 
   const stats = [
     {
