@@ -4,19 +4,19 @@ export const healthData = [
     traffic: {
       total_views: 640465,
       top_pages: [
-        { path: "/", views: 78939 },
-        { path: "/search", views: 70253 },
-        { path: "/checkout", views: 25566 },
-        { path: "/clearance-specials", views: 13852 },
-        { path: "/cart", views: 10375 },
+        { path: '/', views: 78939 },
+        { path: '/search', views: 70253 },
+        { path: '/checkout', views: 25566 },
+        { path: '/clearance-specials', views: 13852 },
+        { path: '/cart', views: 10375 },
       ],
       browsers: [
-        { name: "Chrome", views: 205900, percentage: 42.0 },
-        { name: "Safari", views: 183740, percentage: 37.5 },
-        { name: "Other", views: 49746, percentage: 10.1 },
-        { name: "Edge", views: 23196, percentage: 4.7 },
-        { name: "Firefox", views: 14446, percentage: 2.9 },
-        { name: "Samsung Internet", views: 13140, percentage: 2.7 },
+        { name: 'Chrome', views: 205900, percentage: 42.0 },
+        { name: 'Safari', views: 183740, percentage: 37.5 },
+        { name: 'Other', views: 49746, percentage: 10.1 },
+        { name: 'Edge', views: 23196, percentage: 4.7 },
+        { name: 'Firefox', views: 14446, percentage: 2.9 },
+        { name: 'Samsung Internet', views: 13140, percentage: 2.7 },
       ],
     },
     reliability: {
@@ -46,9 +46,9 @@ export const healthData = [
       conversion_rate: '1.9%',
     },
     web_vitals: {
-      lcp: "2.5s",
-      fid: "200ms",
-      cls: "0.1",
+      lcp: '2.5s',
+      fid: '200ms',
+      cls: '0.1',
     },
   },
 ];

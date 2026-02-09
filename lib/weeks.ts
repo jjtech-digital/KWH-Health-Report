@@ -51,7 +51,7 @@ export function generateReportIndex(): YearGroup[] {
 
     for (let w = 1; w <= maxWeek; w++) {
       const { start, end } = getWeekDateRange(y, w)
-      
+
       // Only add the week if the current day has passed it
       if (now <= end) {
         continue
@@ -91,7 +91,7 @@ export function generateReportIndex(): YearGroup[] {
       weeks.forEach((week, index) => {
         week.week = index + 1
       })
-      
+
       months.push({
         month,
         monthIndex: parseInt(idxStr, 10),

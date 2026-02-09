@@ -15,7 +15,6 @@ export default async function ReportPage({
 }) {
   const { year, week } = await params
   const weekNum = parseInt(week.replace("w", ""), 10);
-  
   const { start, end } = getWeekDateRange(parseInt(year, 10), weekNum)
 
   const formattedRange = `${start.toLocaleDateString("en-AU", {

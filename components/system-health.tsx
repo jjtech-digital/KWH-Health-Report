@@ -61,14 +61,13 @@ export function SystemHealth({weekNumber}: Readonly<{weekNumber: number}>) {
                   </div>
                   <div className="flex items-center gap-2 ml-6 sm:ml-0 shrink-0">
                     <span className="inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium bg-destructive/10 text-destructive">
-                     {page.status}
+                      {page.status}
                     </span>
                     <span className="text-xs text-muted-foreground">
                       {page.failures} fails
                     </span>
                   </div>
                 </div>
-                
                 <div className="relative h-1.5 w-100 rounded-full bg-muted overflow-hidden ml-6">
                   <div
                     className="absolute inset-y-0 left-0 rounded-full bg-destructive/60"

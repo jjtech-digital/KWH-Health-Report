@@ -1,5 +1,5 @@
-import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react";
-import { healthData } from "@/lib/data";
+import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react"
+import { healthData } from "@/lib/data"
 
 export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
   const { total_orders, payment_failures_declined, payment_failures_approved, active_carts } =
@@ -53,15 +53,9 @@ export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
             >
               <stat.icon className={`w-5 h-5 ${stat.iconColor}`} />
             </div>
-            <span className="text-sm font-medium text-muted-foreground">
-              {stat.label}
-            </span>
+            <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
           </div>
-          <p
-            className={`text-2xl sm:text-3xl font-bold tracking-tight ${stat.valueColor}`}
-          >
-            {stat.value}
-          </p>
+          <p className={`text-2xl sm:text-3xl font-bold tracking-tight ${stat.valueColor}`}>{stat.value}</p>
         </div>
       ))}
     </section>

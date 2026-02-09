@@ -23,7 +23,7 @@ function getVitalStatus(metric: string, value: string): { color: string; label: 
 }
 
 export function WebVitals({weekNumber}: Readonly<{weekNumber: number}>) {
-  const vitals = healthData?.find((data) => data?.week_number === weekNumber)?.web_vitals;
+  const vitals = healthData?.find((data) => data?.week_number === weekNumber)?.web_vitals || { lcp: "0s", fid: "0ms", cls: "0" };
 
   const metrics = [
     {
