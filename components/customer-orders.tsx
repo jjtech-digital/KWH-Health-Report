@@ -3,7 +3,7 @@ import { healthData } from "@/lib/data"
 
 export function CustomerOrders() {
   const {
-    new_customers,
+    first_time_buyers,
     returning_customers,
     guest_checkouts,
     registered_user_orders,
@@ -14,7 +14,7 @@ export function CustomerOrders() {
   const stats = [
     {
       label: "New Customers",
-      value: new_customers.toLocaleString(),
+      value: first_time_buyers.toLocaleString(),
       description: "First-time buyers this week",
       icon: UserPlus,
       iconColor: "text-primary",

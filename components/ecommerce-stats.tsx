@@ -2,7 +2,7 @@ import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react"
 import { healthData } from "@/lib/data"
 
 export function EcommerceStats() {
-  const { total_orders, payment_failures, active_carts } = healthData[0].ecommerce
+  const { total_orders, payment_failures_approved, payment_failures_declined, active_carts } = healthData[0].ecommerce
 
   const stats = [
     {
@@ -15,7 +15,7 @@ export function EcommerceStats() {
     },
     {
       label: "Payment Failures",
-      value: payment_failures.toLocaleString(),
+      value: payment_failures_approved.toLocaleString(),
       icon: AlertTriangle,
       iconColor: "text-[hsl(var(--destructive))]",
       iconBg: "bg-[hsl(var(--destructive))]/10",
