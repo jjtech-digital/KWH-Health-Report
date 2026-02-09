@@ -2,7 +2,7 @@ import { ShieldAlert } from "lucide-react"
 import { healthData } from "@/lib/data"
 
 export function SystemHealth() {
-  const { failed_requests, error_rate, top_failed_pages } = healthData.reliability
+  const { failed_requests, error_rate, top_failed_pages } = healthData[0].reliability
   const hasFailures = failed_requests > 0
   const maxFailures = top_failed_pages.length > 0 ? top_failed_pages[0].failures : 1
 

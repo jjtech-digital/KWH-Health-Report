@@ -9,7 +9,7 @@ export function CustomerOrders() {
     registered_user_orders,
     total_registered_users,
     conversion_rate,
-  } = healthData.customers
+  } = healthData[0].customers
 
   const stats = [
     {

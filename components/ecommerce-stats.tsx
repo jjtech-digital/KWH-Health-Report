@@ -2,7 +2,7 @@ import { ShoppingBag, AlertTriangle, ShoppingCart } from "lucide-react"
 import { healthData } from "@/lib/data"
 
 export function EcommerceStats() {
-  const { total_orders, payment_failures, active_carts } = healthData.ecommerce
+  const { total_orders, payment_failures, active_carts } = healthData[0].ecommerce
 
   const stats = [
     {

@@ -23,7 +23,7 @@ function getVitalStatus(metric: string, value: string): { color: string; label: 
 }
 
 export function WebVitals() {
-  const vitals = healthData.web_vitals
+  const vitals = healthData[0].web_vitals
 
   const metrics = [
     {

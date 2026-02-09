@@ -11,7 +11,7 @@ const BROWSER_COLORS: Record<string, string> = {
 }
 
 export function TrafficOverview() {
-  const { total_views, top_pages, browsers } = healthData.traffic
+  const { total_views, top_pages, browsers } = healthData[0].traffic
   const maxViews = top_pages[0]?.views ?? 1
 
   return (
