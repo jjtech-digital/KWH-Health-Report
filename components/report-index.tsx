@@ -11,7 +11,17 @@ import {
   ArrowRight,
 } from "lucide-react"
 
-function WeekCard({ year, week, label }: { year: number; week: number; label: string }) {
+function WeekCard({
+  year,
+  week,
+  displayWeek,
+  label,
+}: {
+  year: number
+  week: number
+  displayWeek: number
+  label: string
+}) {
   return (
     <Link
       href={`/report/${year}/w${week}`}
@@ -19,11 +29,11 @@ function WeekCard({ year, week, label }: { year: number; week: number; label: st
     >
       <div className="flex items-center gap-3 min-w-0">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary font-semibold text-sm">
-          W{week}
+          W{displayWeek}
         </div>
         <div className="min-w-0">
           <p className="text-sm font-medium text-card-foreground">
-            Week {week}
+            Week {displayWeek}
           </p>
           <p className="text-xs text-muted-foreground truncate">{label}</p>
         </div>
@@ -63,12 +73,13 @@ function MonthSection({ monthGroup, year, defaultOpen }: { monthGroup: MonthGrou
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {monthGroup.weeks
               .slice()
-              .sort((a, b) => b.week - a.week)
+              .sort((a, b) => b.monthWeek - a.monthWeek)
               .map((w) => (
                 <WeekCard
                   key={w.week}
                   year={year}
                   week={w.week}
+                  displayWeek={w.monthWeek}
                   label={w.label}
                 />
               ))}

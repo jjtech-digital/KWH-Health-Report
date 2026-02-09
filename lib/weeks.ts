@@ -11,6 +11,7 @@ import {
 export interface WeekEntry {
   year: number
   week: number
+  monthWeek: number
   label: string
   startDate: Date
   endDate: Date
@@ -68,6 +69,7 @@ export function generateReportIndex(): YearGroup[] {
       const entry: WeekEntry = {
         year: y,
         week: w,
+        monthWeek: 0,
         label: `${format(start, "d MMM")} – ${format(end, "d MMM")}`,
         startDate: start,
         endDate: end,
@@ -86,10 +88,12 @@ export function generateReportIndex(): YearGroup[] {
     for (const [key, weeks] of monthMap) {
       const [idxStr, month] = key.split("-")
       
-      // Sort weeks by start date and renumber starting from 1 for each month
+      // Keep ISO week numbers intact for routing/date math.
+      // Store per-month numbering separately (monthWeek),
+      // because /report/${year}/w${week} and getWeekDateRange(year, week) expect ISO weeks.
       weeks.sort((a, b) => a.startDate.getTime() - b.startDate.getTime())
       weeks.forEach((week, index) => {
-        week.week = index + 1
+        week.monthWeek = index + 1
       })
 
       months.push({
