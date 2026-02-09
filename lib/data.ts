@@ -22,11 +22,12 @@ export const healthData = [
       failed_requests: 124,
       error_rate: '0.08%',
       top_failed_pages: [
-        { path: '/api/checkout', failures: 42, status: 500 },
-        { path: '/api/payment', failures: 31, status: 502 },
-        { path: '/products/detail', failures: 22, status: 503 },
-        { path: '/api/inventory', failures: 18, status: 500 },
-        { path: '/user/profile', failures: 11, status: 504 },
+        {
+          path: '/status/extensionrunner', failures: 167, status: 500 },
+        { path: '/checkout/validatestock', failures: 163, status: 400 },
+        { path: '/ct-auth/getAnonymousAccessToken', failures: 7, status: 500 },
+        { path: '/products/list', failures: 4, status: 500 },
+        { path: '/frontastic/page', failures: 11, status: 503 },
       ],
     },
     ecommerce: {
