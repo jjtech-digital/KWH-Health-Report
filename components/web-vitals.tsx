@@ -1,8 +1,8 @@
-import { Gauge } from "lucide-react"
+import { Monitor, TabletSmartphone } from "lucide-react"
 import { healthData } from "@/lib/data"
 
 function getVitalStatus(metric: string, value: string): { color: string; label: string; bg: string } {
-  const num = parseFloat(value)
+  const num = Number.parseFloat(value)
 
   switch (metric) {
     case "lcp":
@@ -22,44 +22,52 @@ function getVitalStatus(metric: string, value: string): { color: string; label: 
   }
 }
 
-export function WebVitals({weekNumber}: Readonly<{weekNumber: number}>) {
-  const vitals = healthData?.find((data) => data?.week_number === weekNumber)?.web_vitals || { lcp: "0s", fid: "0ms", cls: "0" };
+const metrics = [
+  {
+    key: "lcp",
+    label: "LCP",
+    description: "Largest Contentful Paint",
+    threshold: "< 2.5s",
+  },
+  {
+    key: "fid",
+    label: "FID",
+    description: "First Input Delay",
+    threshold: "< 100ms",
+  },
+  {
+    key: "cls",
+    label: "CLS",
+    description: "Cumulative Layout Shift",
+    threshold: "< 0.1",
+  },
+]
 
-  const metrics = [
-    {
-      key: "lcp",
-      label: "LCP",
-      description: "Largest Contentful Paint",
-      value: vitals?.lcp,
-      threshold: "< 2.5s",
-    },
-    {
-      key: "fid",
-      label: "FID",
-      description: "First Input Delay",
-      value: vitals?.fid,
-      threshold: "< 100ms",
-    },
-    {
-      key: "cls",
-      label: "CLS",
-      description: "Cumulative Layout Shift",
-      value: vitals?.cls,
-      threshold: "< 0.1",
-    },
-  ]
-
+function VitalsSection({ device, weekNumber }: { device: 'mobile' | 'desktop'; weekNumber: number }) {
   return (
-    <section>
-      <div className="flex items-center gap-3 mb-4">
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-          <Gauge className="w-5 h-5 text-primary" />
+          {device === 'mobile' ? (
+            <TabletSmartphone className="w-5 h-5 text-primary" />
+          ) : (
+            <Monitor className="w-5 h-5 text-primary" />
+          )}
         </div>
-        <h2 className="text-sm font-medium text-muted-foreground">Core Web Vitals</h2>
+        <h3 className="text-sm font-medium text-muted-foreground capitalize">
+          {device} Core Web Vitals
+        </h3>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {metrics.map((metric) => {
-          const status = getVitalStatus(metric.key, metric.value || "")
+          const weekData = healthData?.find((data) => data?.week_number === weekNumber);
+          const vitals =
+            device === "mobile"
+              ? weekData?.web_vitals?.mobile
+              : weekData?.web_vitals?.desktop;
+          const fallback = { lcp: "0s", fid: "0ms", cls: "0" };
+          const value = (vitals?.[metric.key as keyof typeof fallback] as string) || fallback[metric.key as keyof typeof fallback];
+          const status = getVitalStatus(metric.key, value);
           return (
             <div
               key={metric.key}
@@ -74,7 +82,7 @@ export function WebVitals({weekNumber}: Readonly<{weekNumber: number}>) {
                   {status.label}
                 </span>
               </div>
-              <p className={`text-2xl sm:text-3xl font-bold tracking-tight ${status.color}`}>{metric.value}</p>
+              <p className={`text-2xl sm:text-3xl font-bold tracking-tight ${status.color}`}>{value}</p>
               <div className="flex flex-col gap-1">
                 <p className="text-xs text-muted-foreground">{metric.description}</p>
                 <p className="text-xs text-muted-foreground">
@@ -85,6 +93,15 @@ export function WebVitals({weekNumber}: Readonly<{weekNumber: number}>) {
           )
         })}
       </div>
+    </div>
+  )
+}
+
+export function WebVitals({ weekNumber }: Readonly<{ weekNumber: number }>) {
+  return (
+    <section className="flex flex-col gap-8">
+      <VitalsSection device="mobile" weekNumber={weekNumber} />
+      <VitalsSection device="desktop" weekNumber={weekNumber} />
     </section>
   )
 }
