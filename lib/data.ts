@@ -1,5 +1,84 @@
 export const healthData = [
   {
+    week_number: 2,
+    traffic: {
+      total_views: 608776,
+      top_pages: [
+        { path: "/", views: 60582 },
+        { path: "/blog/recipes/healthier-marry-me-chicken", views: 17662 },
+        { path: "/search", views: 9629 },
+        { path: "/checkout", views: 3106 },
+        { path: "/brands/wolstead/wolstead-pro-steel", views: 2934 },
+      ],
+      browsers: [
+        { name: "Chrome", views: 177523, percentage: 43.2 },
+        { name: "Safari", views: 166829, percentage: 40.6 },
+        { name: "Other", views: 7921, percentage: 1.9 },
+        { name: "Edge", views: 17200, percentage: 4.2 },
+        { name: "Firefox", views: 28652, percentage: 7.0 },
+        { name: "Samsung Internet", views: 12849, percentage: 3.1 },
+      ],
+    },
+    reliability: {
+      failed_requests: 579,
+      error_rate: "0.0951%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/wishlist/addItemsToWishlist",
+          failures: 194,
+          status: 400,
+        },
+        {
+          path: "/status/extensionrunner",
+          failures: 164,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/checkout/validatestock",
+          failures: 116,
+          status: 409,
+        },
+        {
+          path: "/frontastic/action/cart/AddDiscount",
+          failures: 68,
+          status: 409,
+        },
+        {
+          path: "/{kitchenwarehouse-prod}/shipping-methods",
+          failures: 34,
+          status: 503,
+        },
+        { path: "/products/list", failures: 3, status: 500 },
+      ],
+    },
+    ecommerce: {
+      total_orders: 9128,
+      payment_failures_declined: 2,
+      payment_failures_approved: 17,
+      active_carts: 635925,
+    },
+    customers: {
+      first_time_buyers: 494,
+      returning_customers: 0,
+      guest_checkouts: 2633,
+      registered_user_orders: 6495,
+      total_registered_users: 1376,
+      conversion_rate: "2.79%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "3.4s",
+        fid: "100ms",
+        cls: "0.23",
+      },
+      mobile: {
+        lcp: "7.3s",
+        fid: "420ms",
+        cls: "0.359",
+      },
+    },
+  },
+  {
     week_number: 1,
     traffic: {
       total_views: 640465,
