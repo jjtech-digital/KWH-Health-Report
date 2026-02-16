@@ -67,14 +67,14 @@ export const healthData = [
     },
     web_vitals: {
       desktop: {
-        lcp: "3.4s",
-        fid: "100ms",
-        cls: "0.23",
+        lcp: "2.5s",
+        fid: "200ms",
+        cls: "0.1",
       },
       mobile: {
-        lcp: "7.3s",
-        fid: "420ms",
-        cls: "0.359",
+        lcp: "2.5s",
+        fid: "200ms",
+        cls: "0.1",
       },
     },
   },
@@ -134,9 +134,9 @@ export const healthData = [
         cls: "0.1",
       },
       mobile: {
-        lcp: "3.7s",
-        fid: "140ms",
-        cls: "0",
+        lcp: "2.5s",
+        fid: "200ms",
+        cls: "0.1",
       },
     },
   },
