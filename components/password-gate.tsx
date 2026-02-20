@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react"
 import { KWLogo } from "@/components/kw-logo"
+import { Eye, EyeOff } from "lucide-react"
 
 const AUTH_STORAGE_KEY = "kwh-health-report:unlocked"
 const PASSWORD_ENV_KEY = "NEXT_PUBLIC_KWH_HEALTH_REPORT"
@@ -40,6 +41,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
     expectedPassword ? "checking" : "misconfigured",
   )
   const [password, setPassword] = useState("")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -115,24 +117,40 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
                 >
                   Password
                 </label>
-                <input
-                  ref={inputRef}
-                  id={inputId}
-                  type="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value)
-                    if (error) setError(null)
-                  }}
-                  aria-invalid={Boolean(error)}
-                  aria-describedby={error ? errorId : helpId}
-                  className={`h-10 rounded-md border bg-background px-3 text-sm outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-                    error
-                      ? "border-destructive/60 focus-visible:ring-destructive"
-                      : "border-input"
-                  }`}
-                />
+                <div className="relative">
+                  <input
+                    ref={inputRef}
+                    id={inputId}
+                    type={isPasswordVisible ? "text" : "password"}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value)
+                      if (error) setError(null)
+                    }}
+                    aria-invalid={Boolean(error)}
+                    aria-describedby={error ? errorId : helpId}
+                    className={`h-10 w-full rounded-md border bg-background pl-3 pr-10 text-sm outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                      error
+                        ? "border-destructive/60 focus-visible:ring-destructive"
+                        : "border-input"
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => setIsPasswordVisible((v) => !v)}
+                    aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+                    aria-pressed={isPasswordVisible}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
+                  >
+                    {isPasswordVisible ? (
+                      <EyeOff className="h-4 w-4" aria-hidden="true" />
+                    ) : (
+                      <Eye className="h-4 w-4" aria-hidden="true" />
+                    )}
+                  </button>
+                </div>
                 {error ? (
                   <p
                     id={errorId}
