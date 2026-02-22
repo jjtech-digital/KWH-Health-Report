@@ -1,5 +1,69 @@
 export const healthData = [
   {
+    week_number: 3,
+    traffic: {
+      total_views: 605229,
+      top_pages: [
+        { path: "/", views: 70698 },
+        { path: "/search", views: 9394 },
+        { path: "/blog/recipes/healthier-marry-me-chicken", views: 8594 },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 6408,
+        },
+        {
+          path: "/product/kitchen-pro-eco-square-glass-canister-with-glass-lid-set-12pc",
+          views: 4938,
+        },
+      ],
+      browsers: [
+        { name: "Chrome", views: 183931, percentage: 40.1 },
+        { name: "Safari", views: 52768, percentage: 11.5 },
+        { name: "Other", views: 168956, percentage: 36.8 },
+        { name: "Edge", views: 20492, percentage: 4.5 },
+        { name: "Firefox", views: 7721, percentage: 1.7 },
+        { name: "Samsung Internet", views: 12321, percentage: 2.7 },
+      ],
+    },
+    reliability: {
+      failed_requests: 1082,
+      error_rate: "0.18%",
+      top_failed_pages: [
+        { path: "/frontastic/page", failures: 835, status: 503 },
+        { path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken", failures: 159, status: 500 },
+        { path: "/frontastic/action/products/list", failures: 45, status: 542 },
+        { path: "/frontastic/action/checkout/details", failures: 28, status: 500 },
+        { path: "/frontastic/action/products/algolia-events", failures: 15, status: 542 },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8593,  
+      payment_failures_declined: 4,
+      payment_failures_approved: 9,
+      active_carts: 625321, 
+    },
+    customers: {
+      first_time_buyers: 434, 
+      returning_customers: 185,
+      guest_checkouts: 2485,
+      registered_user_orders: 6107,
+      total_registered_users: 1278,
+      conversion_rate: "1.90%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.9s",
+        fid: "221ms",
+        cls: "0.44",
+      },
+      mobile: {
+        lcp: "2.9s",
+        fid: "320ms",
+        cls: "0.08",
+      },
+    },
+  },
+  {
     week_number: 2,
     traffic: {
       total_views: 608776,
@@ -59,7 +123,7 @@ export const healthData = [
     },
     customers: {
       first_time_buyers: 494,
-      returning_customers: 0,
+      returning_customers: 202,
       guest_checkouts: 2633,
       registered_user_orders: 6495,
       total_registered_users: 1376,
@@ -121,7 +185,7 @@ export const healthData = [
     },
     customers: {
       first_time_buyers: 458,
-      returning_customers: 0,
+      returning_customers: 237,
       guest_checkouts: 2801,
       registered_user_orders: 6920,
       total_registered_users: 1424,
