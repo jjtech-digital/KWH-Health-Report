@@ -38,7 +38,7 @@ function WeekCard({
           <p className="text-xs text-muted-foreground truncate">{label}</p>
         </div>
       </div>
-      <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-primary/70 opacity-0 transition-opacity group-hover:opacity-100" />
     </Link>
   )
 }
@@ -63,9 +63,9 @@ function MonthSection({ monthGroup, year, defaultOpen }: { monthGroup: MonthGrou
           </span>
         </div>
         {isOpen ? (
-          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+          <ChevronDown className="h-4 w-4 text-primary/70" />
         ) : (
-          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <ChevronRight className="h-4 w-4 text-primary/70" />
         )}
       </button>
       {isOpen && (
@@ -128,7 +128,7 @@ export function ReportIndex({ data }: { data: YearGroup[] }) {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card py-16 text-center">
-          <FileText className="h-10 w-10 text-muted-foreground/50" />
+          <FileText className="h-10 w-10 text-primary/40" />
           <p className="text-sm text-muted-foreground">
             No reports available for this year.
           </p>

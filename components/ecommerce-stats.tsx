@@ -49,24 +49,24 @@ export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
       label: "Payment Failures Declined",
       value: payment_failures_declined?.toLocaleString(),
       icon: AlertTriangle,
-      iconColor: "text-[hsl(var(--destructive))]",
-      iconBg: "bg-[hsl(var(--destructive))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
       valueColor: "text-[hsl(var(--destructive))]",
     },
     {
       label: "Payment Failures Approved",
       value: payment_failures_approved?.toLocaleString(),
       icon: AlertTriangle,
-      iconColor: "text-[hsl(var(--destructive))]",
-      iconBg: "bg-[hsl(var(--destructive))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
       valueColor: "text-[hsl(var(--destructive))]",
     },
     {
       label: "Active Carts",
       value: active_carts?.toLocaleString(),
       icon: ShoppingCart,
-      iconColor: "text-[hsl(var(--success))]",
-      iconBg: "bg-[hsl(var(--success))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
       valueColor: "text-card-foreground",
     },
   ];
@@ -92,7 +92,7 @@ export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
               className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-muted transition-colors"
               aria-label={`More info about ${stat.label}`}
             >
-              <Info className="w-3 h-3 text-muted-foreground hover:text-foreground transition-colors" />
+              <Info className="w-3 h-3 text-primary/70 hover:text-primary transition-colors" />
             </button>
           </div>
           <p className={`text-2xl sm:text-3xl font-bold tracking-tight ${stat.valueColor}`}>{stat.value}</p>
@@ -126,7 +126,7 @@ export function EcommerceStats({weekNumber}: Readonly<{weekNumber: number}>) {
               className="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="Close modal"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-primary" />
             </button>
             
             <div className="pr-8">

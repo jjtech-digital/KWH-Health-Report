@@ -142,7 +142,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
                     onClick={() => setIsPasswordVisible((v) => !v)}
                     aria-label={isPasswordVisible ? "Hide password" : "Show password"}
                     aria-pressed={isPasswordVisible}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-primary/70 transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
                   >
                     {isPasswordVisible ? (
                       <EyeOff className="h-4 w-4" aria-hidden="true" />

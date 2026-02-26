@@ -62,16 +62,16 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
       value: returning_customers.toLocaleString(),
       description: "Repeat purchases this week",
       icon: UserCheck,
-      iconColor: "text-[hsl(var(--success))]",
-      iconBg: "bg-[hsl(var(--success))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
     },
     {
       label: "Guest Checkouts",
       value: guest_checkouts.toLocaleString(),
       description: "Orders without an account",
       icon: Users,
-      iconColor: "text-[hsl(var(--warning))]",
-      iconBg: "bg-[hsl(var(--warning))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
     },
     {
       label: "Registered User Orders",
@@ -86,8 +86,8 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
       value: total_registered_users.toLocaleString(),
       description: "Active accounts on platform",
       icon: TrendingUp,
-      iconColor: "text-[hsl(var(--success))]",
-      iconBg: "bg-[hsl(var(--success))]/10",
+      iconColor: "text-primary",
+      iconBg: "bg-primary/10",
     },
     {
       label: "Conversion Rate",
@@ -130,7 +130,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
                 className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-muted transition-colors"
                 aria-label={`More info about ${stat.label}`}
               >
-                <Info className="w-3 h-3 text-muted-foreground hover:text-foreground transition-colors" />
+                <Info className="w-3 h-3 text-primary/70 hover:text-primary transition-colors" />
               </button>
             </div>
             <p className="text-2xl font-bold tracking-tight text-card-foreground">{stat.value}</p>
@@ -154,7 +154,7 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
               className="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="Close modal"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 text-primary" />
             </button>
             
             <div className="pr-8">

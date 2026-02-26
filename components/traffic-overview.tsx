@@ -31,7 +31,7 @@ export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
       {/* Browser Breakdown */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
-          <Globe className="w-4 h-4 text-muted-foreground" />
+          <Globe className="w-4 h-4 text-primary" />
           <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Views by Browser
           </h3>
