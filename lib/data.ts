@@ -1,5 +1,81 @@
 export const healthData = [
   {
+    week_number: 4,
+    traffic: {
+      total_views: 613701,
+      top_pages: [
+        { path: "/", views: 82278 },
+        { path: "/search", views: 8308 },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 5449,
+        },
+        { path: "/blog/recipes/sweet-potato-and-bacon-hash", views: 4657 },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 3556,
+        },
+      ],
+      browsers: [
+        { name: "Chrome", views: 170093, percentage: 47.24 },
+        { name: "Safari", views: 157218, percentage: 43.65 },
+        { name: "Other", views: 12719, percentage: 3.53 },
+        { name: "Edge", views: 37892, percentage: 10.52 },
+        { name: "Firefox", views: 13151, percentage: 3.65 },
+        { name: "Samsung Internet", views: 13707, percentage: 3.81 },
+      ],
+    },
+    reliability: {
+      failed_requests: 1972,
+      error_rate: "0.55%",
+      top_failed_pages: [
+        { path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken", failures: 1428, status: 500 },
+        {
+          path: "/frontastic/action/checkout/details",
+          failures: 308,
+          status: 500,
+        },
+        { path: "/frontastic/action/storelocator/stock-by-sku", failures: 178, status: 401 },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 52,
+          status: 542,
+        },
+        {
+          path: "/frontastic/action/wishlist/addItemsToWishlist",
+          failures: 6,
+          status: 400,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8470,
+      payment_failures_declined: 1,
+      payment_failures_approved: 11,
+      active_carts: 643202,
+    },
+    customers: {
+      first_time_buyers: 444, 
+      returning_customers: 173,
+      guest_checkouts: 2444,
+      registered_user_orders: 6140,
+      total_registered_users: 1322,
+      conversion_rate: "1.87%", 
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.9s",
+        fid: "222ms",
+        cls: "0.46",
+      },
+      mobile: {
+        lcp: "2.9s",
+        fid: "319ms",
+        cls: "0.12",
+      },
+    },
+  },
+  {
     week_number: 3,
     traffic: {
       total_views: 605229,
@@ -30,20 +106,32 @@ export const healthData = [
       error_rate: "0.18%",
       top_failed_pages: [
         { path: "/frontastic/page", failures: 835, status: 503 },
-        { path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken", failures: 159, status: 500 },
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 159,
+          status: 500,
+        },
         { path: "/frontastic/action/products/list", failures: 45, status: 542 },
-        { path: "/frontastic/action/checkout/details", failures: 28, status: 500 },
-        { path: "/frontastic/action/products/algolia-events", failures: 15, status: 542 },
+        {
+          path: "/frontastic/action/checkout/details",
+          failures: 28,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/products/algolia-events",
+          failures: 15,
+          status: 542,
+        },
       ],
     },
     ecommerce: {
-      total_orders: 8593,  
+      total_orders: 8593,
       payment_failures_declined: 4,
       payment_failures_approved: 9,
-      active_carts: 625321, 
+      active_carts: 625321,
     },
     customers: {
-      first_time_buyers: 434, 
+      first_time_buyers: 434,
       returning_customers: 185,
       guest_checkouts: 2485,
       registered_user_orders: 6107,
