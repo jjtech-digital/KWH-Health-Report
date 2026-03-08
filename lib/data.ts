@@ -1,5 +1,92 @@
 export const healthData = [
   {
+    week_number: 5,
+    traffic: {
+      total_views: 601835,
+      top_pages: [
+        { path: "/", views: 70224 },
+        {
+          path: "/clearance-specials",
+          views: 11689,
+        },
+        { path: "/search", views: 7370 },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 5939,
+        },
+        {
+          path: "/blog/recipes/pad-krapow-gai-thai-chilli-basil-chicken",
+          views: 5515,
+        },
+      ],
+      browsers: [
+        { name: "Chrome", views: 185671, percentage: 42.38 },
+        { name: "Safari", views: 164963, percentage: 37.65 },
+        { name: "Other", views: 42673, percentage: 9.74 },
+        { name: "Edge", views: 19150, percentage: 4.37 },
+        { name: "Firefox", views: 13548, percentage: 3.09 },
+        { name: "Samsung Internet", views: 12090, percentage: 2.76 },
+      ],
+    },
+    reliability: {
+      failed_requests: 275,
+      error_rate: "0.046%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 169,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 74,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/checkout/getcartsessionid",
+          failures: 20,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/products/listByKeys",
+          failures: 8,
+          status: 503,
+        },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 4,
+          status: 542,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8284,
+      payment_failures_declined: 1,
+      payment_failures_approved: 9,
+      active_carts: 658796,
+    },
+    customers: {
+      first_time_buyers: 464,
+      returning_customers: 176,
+      guest_checkouts: 2332,
+      registered_user_orders: 5949,
+      total_registered_users: 1267,
+      conversion_rate: "1.94%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.8s",
+        fid: "219ms",
+        cls: "0.46",
+      },
+      mobile: {
+        lcp: "2.9s",
+        fid: "317ms",
+        cls: "0.16",
+      },
+    },
+  },
+  {
     week_number: 4,
     traffic: {
       total_views: 613701,
@@ -29,13 +116,21 @@ export const healthData = [
       failed_requests: 1972,
       error_rate: "0.55%",
       top_failed_pages: [
-        { path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken", failures: 1428, status: 500 },
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 1428,
+          status: 500,
+        },
         {
           path: "/frontastic/action/checkout/details",
           failures: 308,
           status: 500,
         },
-        { path: "/frontastic/action/storelocator/stock-by-sku", failures: 178, status: 401 },
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 178,
+          status: 401,
+        },
         {
           path: "/frontastic/action/products/list",
           failures: 52,
@@ -55,12 +150,12 @@ export const healthData = [
       active_carts: 643202,
     },
     customers: {
-      first_time_buyers: 444, 
+      first_time_buyers: 444,
       returning_customers: 173,
       guest_checkouts: 2444,
       registered_user_orders: 6140,
       total_registered_users: 1322,
-      conversion_rate: "1.87%", 
+      conversion_rate: "1.87%",
     },
     web_vitals: {
       desktop: {
