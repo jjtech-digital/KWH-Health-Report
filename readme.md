@@ -118,7 +118,7 @@ NEXT_PUBLIC_KWH_HEALTH_REPORT=your_password_here
 ### Running the Development Server
 
 ```bash
-pnpm dev
+yarn run dev
 ```
 
 The app will be available at `http://localhost:3000`.
@@ -126,14 +126,14 @@ The app will be available at `http://localhost:3000`.
 ### Building for Production
 
 ```bash
-pnpm build
-pnpm start
+yarn run build
+yarn run start
 ```
 
 ### Linting
 
 ```bash
-pnpm lint
+yarn run lint
 ```
 
 ---
@@ -214,3 +214,4 @@ All report data lives in `lib/data.ts` as a static TypeScript array (`healthData
 ```
 
 Week date ranges are calculated dynamically in `lib/weeks.ts` using `date-fns`, with weeks starting on Monday (ISO convention). The report index generator skips January and December and only lists weeks that have already ended.
+
