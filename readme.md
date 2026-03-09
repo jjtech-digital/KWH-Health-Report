@@ -100,7 +100,7 @@ A weekly platform health monitoring dashboard for [Kitchen Warehouse](https://ki
 ### Installation
 
 ```bash
-pnpm install
+yarn install
 ```
 
 ### Environment Variables
@@ -214,4 +214,5 @@ All report data lives in `lib/data.ts` as a static TypeScript array (`healthData
 ```
 
 Week date ranges are calculated dynamically in `lib/weeks.ts` using `date-fns`, with weeks starting on Monday (ISO convention). The report index generator skips January and December and only lists weeks that have already ended.
+
 
