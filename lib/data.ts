@@ -1,5 +1,92 @@
 export const healthData = [
   {
+    week_number: 6,
+    traffic: {
+      total_views: 574327,
+      top_pages: [
+        { path: "/", views: 54359 },
+        { path: "/search", views: 9114 },
+        {
+          path: "/blog/recipes/cauliflower-fried-rice",
+          views: 4300,
+        },
+        {
+          path: "/product/wolstead-forma-pasta-maker-white",
+          views: 3861,
+        },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 3631,
+        },
+      ],
+      browsers: [
+        { name: "Chrome", views: 157340, percentage: 47.94 },
+        { name: "Safari", views: 146781, percentage: 44.72 },
+        { name: "Other", views: 12661, percentage: 3.86 },
+        { name: "Edge", views: 23706, percentage: 7.22 },
+        { name: "Firefox", views: 18277, percentage: 5.57 },
+        { name: "Samsung Internet", views: 12796, percentage: 3.9 },
+      ],
+    },
+    reliability: {
+      failed_requests: 235,
+      error_rate: "0.0410%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 191,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/cart/RemoveDiscount",
+          failures: 12,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/products/product-carousel",
+          failures: 12,
+          status: 503,
+        },
+        {
+          path: "/frontastic/action/cart/UpdateCart",
+          failures: 10,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/menu/get",
+          failures: 10,
+          status: 503,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8299,
+      payment_failures_declined: 0,
+      payment_failures_approved: 13,
+      active_carts: 718094,
+    },
+    customers: {
+      first_time_buyers: 435,
+      returning_customers: 182,
+      guest_checkouts: 2241,
+      registered_user_orders: 6060,
+      total_registered_users: 1388,
+      conversion_rate: "1.97%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.8s",
+        fid: "218ms",
+        cls: "0.50",
+      },
+      mobile: {
+        lcp: "2.9s",
+        fid: "315ms",
+        cls: "0.19",
+      },
+    },
+  },
+  {
     week_number: 5,
     traffic: {
       total_views: 601835,
