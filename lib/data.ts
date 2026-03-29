@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 8,
+    traffic: {
+      total_views: 563423,
+      top_pages: [
+        { path: "/", views: 54467 },
+        { path: "/search", views: 9044 },
+        {
+          path: "/clearance-specials",
+          views: 7022,
+        },
+        {
+          path: "/blog/recipes/almond-croissant-focaccia",
+          views: 4554,
+        },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 2621,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views:181228 ,
+          percentage:43.03 ,
+        },
+        {
+          name: "Safari",
+          views:154542 ,
+          percentage: 36.69 ,
+        },
+        {
+          name: "Edge",
+          views: 18421,
+          percentage:4.37 ,
+        },
+        {
+          name: "Firefox",
+          views: 12731,
+          percentage: 3.02,
+        },
+        {
+          name: "Samsung Internet",
+          views: 12047,
+          percentage: 2.86,
+        },
+        {
+          name: "Other",
+          views: 42232,
+          percentage: 10.03,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 277,
+      error_rate: "0.049%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 107,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 51,
+          status: 542,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 47,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/checkout/getcartsessionid",
+          failures: 44,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 28,
+          status: 500,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8792,
+      payment_failures_declined: 1,
+      payment_failures_approved: 4,
+      active_carts: 696723,
+    },
+    customers: {
+      first_time_buyers: 438,
+      returning_customers: 205,
+      guest_checkouts: 2352,
+      registered_user_orders: 6429,
+      total_registered_users: 1449,
+      conversion_rate: "2.06%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.7s",
+        fid: "193ms",
+        cls: "0.35",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "312ms",
+        cls: "0.13",
+      },
+    },
+  },
+  {
     week_number: 7,
     traffic: {
       total_views: 568976,
