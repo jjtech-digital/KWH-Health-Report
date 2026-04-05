@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 9,
+    traffic: {
+      total_views: 556034,
+      top_pages: [
+        { path: "/", views: 54321 },
+        { path: "/search", views: 11365 },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 3940,
+        },
+        {
+          path: "/product/wolstead-forma-pasta-maker-white",
+          views: 3805,
+        },
+        {
+          path: "/clearance-specials",
+          views: 3331,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 145677,
+          percentage: 34.98,
+        },
+        {
+          name: "Safari",
+          views: 151443,
+          percentage: 36.41,
+        },
+        {
+          name: "Edge",
+          views: 18245,
+          percentage: 4.37,
+        },
+        {
+          name: "Firefox",
+          views: 9192,
+          percentage: 2.21,
+        },
+        {
+          name: "Samsung Internet",
+          views: 13214,
+          percentage: 3.18,
+        },
+        {
+          name: "Other",
+          views: 88229,
+          percentage: 21.21,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 229,
+      error_rate: "0.041%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/sift/metadata",
+          failures: 143,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 39,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 27,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/products/listByKeys",
+          failures: 10,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/wishlist/getAllWishlists",
+          failures: 10,
+          status: 401,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8618,
+      payment_failures_declined: 2,
+      payment_failures_approved: 8,
+      active_carts: 703062,
+    },
+    customers: {
+      first_time_buyers: 457,
+      returning_customers: 228,
+      guest_checkouts: 2297,
+      registered_user_orders: 6321,
+      total_registered_users: 1576,
+      conversion_rate: "2.08%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.7s",
+        fid: "186ms",
+        cls: "0.26",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "302ms",
+        cls: "0.08",
+      },
+    },
+  },
+  {
     week_number: 8,
     traffic: {
       total_views: 563423,
@@ -22,18 +133,18 @@ export const healthData = [
       browsers: [
         {
           name: "Chrome",
-          views:181228 ,
-          percentage:43.03 ,
+          views: 181228,
+          percentage: 43.03,
         },
         {
           name: "Safari",
-          views:154542 ,
-          percentage: 36.69 ,
+          views: 154542,
+          percentage: 36.69,
         },
         {
           name: "Edge",
           views: 18421,
-          percentage:4.37 ,
+          percentage: 4.37,
         },
         {
           name: "Firefox",
