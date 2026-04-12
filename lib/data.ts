@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 10,
+    traffic: {
+      total_views: 587280,
+      top_pages: [
+        { path: "/", views: 58868 },
+        { path: "/search", views: 8638 },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 3404,
+        },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 3135,
+        },
+        {
+          path: "/product/wolstead-harvest-long-grain-chopping-board-set-2pc",
+          views: 2910,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 157223,
+          percentage: 38.6,
+        },
+        {
+          name: "Safari",
+          views: 157242,
+          percentage: 38.6,
+        },
+        {
+          name: "Edge",
+          views: 6446,
+          percentage: 1.6,
+        },
+        {
+          name: "Firefox",
+          views: 10444,
+          percentage: 2.6,
+        },
+        {
+          name: "Samsung Internet",
+          views: 12712,
+          percentage: 3.1,
+        },
+        {
+          name: "Other",
+          views: 62975,
+          percentage: 15.5,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 344,
+      error_rate: "0.058%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 150,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/wishlist/addItemsToWishlist",
+          failures: 118,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 50,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/checkout/getcartsessionid",
+          failures: 24,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/cart/UpdateCart",
+          failures: 2,
+          status: 400,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8899,
+      payment_failures_declined: 1,
+      payment_failures_approved: 11,
+      active_carts: 710762,
+    },
+    customers: {
+      first_time_buyers: 423,
+      returning_customers: 242,
+      guest_checkouts: 2306,
+      registered_user_orders: 6590,
+      total_registered_users: 1636,
+      conversion_rate: "2.06%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.6s",
+        fid: "180ms",
+        cls: "0.18",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "288ms",
+        cls: "0.04",
+      },
+    },
+  },
+  {
     week_number: 9,
     traffic: {
       total_views: 556034,
