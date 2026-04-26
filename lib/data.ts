@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 12,
+    traffic: {
+      total_views: 602156,
+      top_pages: [
+        { path: "/", views: 62780 },
+        { path: "/search", views: 8992 },
+        {
+          path: "/product/kitchen-pro-versalock-glass-container-set-12pc-white",
+          views: 7747,
+        },
+        {
+          path: "/blog/recipes/chicken-cassoulet",
+          views: 6986,
+        },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 6142,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 187515,
+          percentage: 39.26,
+        },
+        {
+          name: "Safari",
+          views: 140443,
+          percentage: 29.41,
+        },
+        {
+          name: "Edge",
+          views: 15122,
+          percentage: 3.17,
+        },
+        {
+          name: "Firefox",
+          views: 6122,
+          percentage: 1.28,
+        },
+        {
+          name: "Samsung Internet",
+          views: 14000,
+          percentage: 2.93,
+        },
+        {
+          name: "Other",
+          views: 115417,
+          percentage: 24.16,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 286,
+      error_rate: "0.0475%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 87,
+          status: 401,
+        },
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 84,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/cart/details",
+          failures: 57,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/products/algolia-events",
+          failures: 53,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/checkout/getcartsessionid",
+          failures: 5,
+          status: 401,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 8831,
+      payment_failures_declined: 3,
+      payment_failures_approved: 17,
+      active_carts: 37313,
+    },
+    customers: {
+      first_time_buyers: 457,
+      returning_customers: 205,
+      guest_checkouts: 2312,
+      registered_user_orders: 6519,
+      total_registered_users: 1567,
+      conversion_rate: "1.96%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.6s",
+        fid: "182ms",
+        cls: "0.11",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "268ms",
+        cls: "0.02",
+      },
+    },
+  },
+  {
     week_number: 11,
     traffic: {
       total_views: 613698,
