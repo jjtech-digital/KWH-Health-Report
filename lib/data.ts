@@ -1,10 +1,120 @@
 export const healthData = [
   {
+    week_number: 14,
+    traffic: {
+      total_views: 570650,
+      top_pages: [ 
+        { path: "/", views: 63189 },
+        { path: "/search", views: 8515 },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 4803,
+        },
+        {
+          path: "/blog/recipes/roast-pumpkin-with-sage-garlic-brown-butter",
+          views: 4797,
+        },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 3931,
+        },
+      ],
+      browsers: [ 
+        {
+          name: "Chrome",
+          views: 74831,
+          percentage: 45.01,
+        },
+        {
+          name: "Safari",
+          views: 16533,
+          percentage: 9.95,
+        },
+        {
+          name: "Edge",
+          views: 16867,
+          percentage: 10.15,
+        },
+        {
+          name: "Firefox",
+          views: 7162,
+          percentage: 4.31,
+        },
+        {
+          name: "Samsung Internet",
+          views: 13848,
+          percentage: 8.34,
+        },
+        {
+          name: "Other",
+          views: 32723,
+          percentage: 19.71,
+        },
+      ],
+    },
+    reliability: { 
+      failed_requests: 361,
+      error_rate: "0.0601%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 153,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 57,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/ct-auth/getAnonymousAccessToken",
+          failures: 54,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 50,
+          status: 503,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 47,
+          status: 500,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 9782, 
+      payment_failures_declined: 0, 
+      payment_failures_approved: 15,  
+      active_carts: 38232, 
+    },
+    customers: {
+      first_time_buyers: 505, 
+      returning_customers: 203, 
+      guest_checkouts: 2640, 
+      registered_user_orders: 7142, 
+      total_registered_users: 1563, 
+      conversion_rate: "2.16%", 
+    },
+    web_vitals: { 
+      desktop: {
+        lcp: "2.7s",
+        fid: "180ms",
+        cls: "0.68",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "258ms",
+        cls: "0.05",
+      },
+    },
+  },
+  {
     week_number: 13,
     traffic: {
       total_views: 593061,
       top_pages: [
-        
         { path: "/", views: 62803 },
         { path: "/search", views: 9915 },
         {
@@ -20,7 +130,7 @@ export const healthData = [
           views: 4593,
         },
       ],
-      browsers: [ 
+      browsers: [
         {
           name: "Chrome",
           views: 194545,
@@ -53,7 +163,7 @@ export const healthData = [
         },
       ],
     },
-    reliability: { 
+    reliability: {
       failed_requests: 343,
       error_rate: "0.0578%",
       top_failed_pages: [
@@ -85,18 +195,18 @@ export const healthData = [
       ],
     },
     ecommerce: {
-      total_orders: 9706,  
-      payment_failures_declined: 2, 
-      payment_failures_approved: 19, 
-      active_carts: 38521, 
+      total_orders: 9706,
+      payment_failures_declined: 2,
+      payment_failures_approved: 19,
+      active_carts: 38521,
     },
     customers: {
-      first_time_buyers: 453, 
-      returning_customers: 201, 
-      guest_checkouts: 2659, 
-      registered_user_orders: 7047,  
-      total_registered_users: 1530, 
-      conversion_rate: "2.06%", 
+      first_time_buyers: 453,
+      returning_customers: 201,
+      guest_checkouts: 2659,
+      registered_user_orders: 7047,
+      total_registered_users: 1530,
+      conversion_rate: "2.06%",
     },
     web_vitals: {
       desktop: {
