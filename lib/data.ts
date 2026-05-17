@@ -1,9 +1,120 @@
 export const healthData = [
   {
+    week_number: 15,
+    traffic: {
+      total_views: 562097,
+      top_pages: [
+        { path: "/", views: 60086 },
+        { path: "/clearance-specials", views: 14259 },
+        {
+          path: "/search",
+          views: 8453,
+        },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 4300,
+        },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 3753,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 418629,
+          percentage: 69.07,
+        },
+        {
+          name: "Safari",
+          views: 163911,
+          percentage: 27.04,
+        },
+        {
+          name: "Edge",
+          views: 31847,
+          percentage: 5.25,
+        },
+        {
+          name: "Firefox",
+          views: 15893,
+          percentage: 2.62,
+        },
+        {
+          name: "Samsung Internet",
+          views: 12815,
+          percentage: 2.11,
+        },
+        {
+          name: "Other",
+          views: 33939,
+          percentage: 5.6,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 95,
+      error_rate: "0.0169%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/cart/details",
+          failures: 38,
+          status: 503,
+        },
+        {
+          path: "/frontastic/action/checkout/validatestock",
+          failures: 22,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/ct-auth/getAnonymousAccessToken",
+          failures: 13,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/menu/get",
+          failures: 11,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 11,
+          status: 500,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 9326, 
+      payment_failures_declined: 1, 
+      payment_failures_approved: 17, 
+      active_carts: 40340, 
+    },
+    customers: {
+      first_time_buyers: 422, 
+      returning_customers: 253, 
+      guest_checkouts: 2774, 
+      registered_user_orders: 6551,
+      total_registered_users: 1479, 
+      conversion_rate: "2.09%", 
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "2.7s",
+        fid: "180ms",
+        cls: "0.68",
+      },
+      mobile: {
+        lcp: "2.8s",
+        fid: "258ms",
+        cls: "0.05",
+      },
+    },
+  },
+  {
     week_number: 14,
     traffic: {
       total_views: 570650,
-      top_pages: [ 
+      top_pages: [
         { path: "/", views: 63189 },
         { path: "/search", views: 8515 },
         {
@@ -19,7 +130,7 @@ export const healthData = [
           views: 3931,
         },
       ],
-      browsers: [ 
+      browsers: [
         {
           name: "Chrome",
           views: 74831,
@@ -52,7 +163,7 @@ export const healthData = [
         },
       ],
     },
-    reliability: { 
+    reliability: {
       failed_requests: 361,
       error_rate: "0.0601%",
       top_failed_pages: [
@@ -84,20 +195,20 @@ export const healthData = [
       ],
     },
     ecommerce: {
-      total_orders: 9782, 
-      payment_failures_declined: 0, 
-      payment_failures_approved: 15,  
-      active_carts: 38232, 
+      total_orders: 9782,
+      payment_failures_declined: 0,
+      payment_failures_approved: 15,
+      active_carts: 38232,
     },
     customers: {
-      first_time_buyers: 505, 
-      returning_customers: 203, 
-      guest_checkouts: 2640, 
-      registered_user_orders: 7142, 
-      total_registered_users: 1563, 
-      conversion_rate: "2.16%", 
+      first_time_buyers: 505,
+      returning_customers: 203,
+      guest_checkouts: 2640,
+      registered_user_orders: 7142,
+      total_registered_users: 1563,
+      conversion_rate: "2.16%",
     },
-    web_vitals: { 
+    web_vitals: {
       desktop: {
         lcp: "2.7s",
         fid: "180ms",
