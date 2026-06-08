@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 18,
+    traffic: {
+      total_views: 578059,
+      top_pages: [
+        { path: "/", views: 66363 },
+        {
+          path: "/offers",
+          views: 10713,
+        },
+        { path: "/search", views: 9362 },
+        {
+          path: "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+          views: 6667,
+        },
+        {
+          path: "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+          views: 5805,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 215196,
+          percentage: 29.15,
+        },
+        {
+          name: "Safari",
+          views: 46482,
+          percentage: 6.29,
+        },
+        {
+          name: "Edge",
+          views: 24034,
+          percentage: 3.26,
+        },
+        {
+          name: "Firefox",
+          views: 8868,
+          percentage: 1.2,
+        },
+        {
+          name: "Samsung Internet",
+          views: 13197,
+          percentage: 1.79,
+        },
+        {
+          name: "Other",
+          views: 430503,
+          percentage: 58.31,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 267,
+      error_rate: "0.04619%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+          failures: 143,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 56,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/cart/details",
+          failures: 36,
+          status: 503,
+        },
+        {
+          path: "/frontastic/action/checkout/validatestock",
+          failures: 18,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/reviews/relatedReviews",
+          failures: 14,
+          status: 400,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 9563,
+      payment_failures_declined: 0,
+      payment_failures_approved: 32,
+      active_carts: 43374,
+    },
+    customers: {
+      first_time_buyers: 471,
+      returning_customers: 216,
+      guest_checkouts: 0,
+      registered_user_orders: 9361,
+      total_registered_users: 1557,
+      conversion_rate: "2.11%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "3.3s",
+        fid: "186ms",
+        cls: "0.81",
+      },
+      mobile: {
+        lcp: "3.6s",
+        fid: "256ms",
+        cls: "0.09",
+      },
+    },
+  },
+  {
     week_number: 17,
     traffic: {
       total_views: 492611,
