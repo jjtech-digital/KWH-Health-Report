@@ -1,5 +1,116 @@
 export const healthData = [
   {
+    week_number: 19,
+    traffic: {
+      total_views: 470897,
+      top_pages: [
+        { path: "/", views: 72696 },
+        { path: "/search", views: 10335 },
+        {
+          path: "/offers",
+          views: 7955,
+        },
+        {
+          path: "/brands/kitchen-pro/kitchen-pro-airlock",
+          views: 5180,
+        },
+        {
+          path: "/brands/kitchen-pro",
+          views: 4120,
+        },
+      ],
+      browsers: [
+        {
+          name: "Chrome",
+          views: 125536,
+          percentage: 42.12,
+        },
+        {
+          name: "Safari",
+          views: 105964,
+          percentage: 35.55,
+        },
+        {
+          name: "Edge",
+          views: 12357,
+          percentage: 4.15,
+        },
+        {
+          name: "Firefox",
+          views: 4235,
+          percentage: 1.42,
+        },
+        {
+          name: "Samsung Internet",
+          views: 9542,
+          percentage: 3.2,
+        },
+        {
+          name: "Other",
+          views: 40425,
+          percentage: 13.56,
+        },
+      ],
+    },
+    reliability: {
+      failed_requests: 147,
+      error_rate: "0.031217%",
+      top_failed_pages: [
+        {
+          path: "/frontastic/action/checkout/riskifiedDecide",
+          failures: 59,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/ct-auth/getAnonymousAccessToken",
+          failures: 35,
+          status: 400,
+        },
+        {
+          path: "/frontastic/action/storelocator/stock-by-sku",
+          failures: 29,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/cart/details",
+          failures: 16,
+          status: 500,
+        },
+        {
+          path: "/frontastic/action/products/list",
+          failures: 8,
+          status: 503,
+        },
+      ],
+    },
+    ecommerce: {
+      total_orders: 7888,
+      payment_failures_declined: 0,
+      payment_failures_approved: 25,
+      active_carts: 39144,
+    },
+    customers: {
+      first_time_buyers: 436,
+      returning_customers: 187,
+      guest_checkouts: 0,
+      registered_user_orders: 7886,
+      total_registered_users: 1238,
+      conversion_rate: "2.22%",
+    },
+    web_vitals: {
+      desktop: {
+        lcp: "3.5s",
+        fid: "190ms",
+        cls: "0.67",
+      },
+      mobile: {
+        lcp: "3.9s",
+        fid: "257ms",
+        cls: "0.09",
+      },
+    },
+  },
+  {
     week_number: 18,
     traffic: {
       total_views: 578059,
