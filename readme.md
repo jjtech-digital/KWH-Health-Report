@@ -81,8 +81,13 @@ A weekly platform health monitoring dashboard for [Kitchen Warehouse](https://ki
 │   ├── report/                # Section components (props-based)
 │   ├── report-index.tsx
 │   └── kw-logo.tsx
+├── data/
+│   └── weeks/                 # Committed JSON snapshots (flat, year in filename)
+│       ├── manifest.json      # Index: by_year → week numbers
+│       └── 2026-w01.json …    # One file per concluded week
 ├── lib/
 │   ├── types/                 # HealthReportWeek, cache, metrics types
+│   ├── data/                  # Week JSON read/write + Redis snapshot helpers
 │   ├── cache/                 # ReportCachePort + Next.js adapter
 │   ├── metrics/
 │   │   ├── commercetools/     # Lifted from fetch-kwh-data sibling
@@ -106,7 +111,7 @@ A weekly platform health monitoring dashboard for [Kitchen Warehouse](https://ki
 
 ### Prerequisites
 
-- **Node.js** >= 18
+- **Node.js** 24.x (see [`.nvmrc`](.nvmrc); `nvm use`)
 - **pnpm** (recommended — lockfile is `pnpm-lock.yaml`)
 
 ### Installation
@@ -224,7 +229,12 @@ The password is never exposed in the client bundle.
 
 ## Data Layer
 
-Metrics are fetched **dynamically at runtime** — no static data file in the repo.
+Hybrid model: **current week** from live queries (Redis); **concluded weeks** from committed JSON snapshots.
+
+| Week type | Read source | Write source |
+|-----------|-------------|--------------|
+| Current (in-progress) | Live queries → Redis merged cache | Cron / manual refresh (current week only) |
+| Concluded (completed) | `data/weeks/{year}-w{nn}.json` + `manifest.json` (Redis snapshot bridge if file not yet deployed) | Week-end finalization copies last Redis cache → JSON (no live API queries) |
 
 | Source | Module | Metrics |
 |--------|--------|---------|
@@ -232,25 +242,49 @@ Metrics are fetched **dynamically at runtime** — no static data file in the re
 | Humio | `lib/metrics/humio/` | Reliability, payment failures |
 | Datadog RUM + Logs | `lib/metrics/datadog/` | Traffic, web vitals, payment logs |
 
-Orchestration: `lib/services/report-assembler.ts` → `getWeekReport()` → **Redis cache** (`kwh-reports:week:{year}:{week}` prefix, TLS via `ioredis`).
+**Current week:** `getWeekReport()` reads Redis only — never JSON. Populated by `populateMissingWeeks()` (current week only) → per-provider Redis keys → merged `kwh-reports:week:{year}:{week}`.
 
-Local and Vercel use the **same env var names** — `.env` locally (loaded by `next.config.mjs`), Vercel dashboard in production. API routes use `runtime = "nodejs"` for Redis. Set `REDIS_TLS=false` for plain TCP Redis Cloud endpoints (default).
+**Concluded weeks:** `getWeekReport()` reads committed JSON at `data/weeks/{year}-w{nn}.json` (e.g. `2026-w11.json`). See `data/weeks/manifest.json` for the year → weeks index. Does not read live Redis merged keys or re-run provider queries. If the JSON file is not yet committed, falls back to Redis snapshot key `kwh-reports:week-snapshot:{year}:{week}`.
 
-**Cron:** Vercel cron hits `/api/cron/refresh-weeks` every **30 minutes** (`*/30 * * * *`). Requires **Vercel Pro** for sub-hourly schedules (Hobby is daily-only).
+**How JSON files are created**
+
+| Trigger | What happens |
+|---------|----------------|
+| Week rolls forward | `finalizeRecentlyConcludedWeek()` at start of each populate/cron tick copies the previous week’s cacheable Redis cache → JSON + Redis snapshot (no API queries) |
+| Current week refresh completes | While the week is still current, data stays in Redis only |
+| Historical bootstrap | `yarn weeks:import-historical` writes `{year}-w{nn}.json` from git |
+| Manual export | `yarn weeks:snapshot -- 2026 21` copies Redis merged cache → JSON file |
+| After any write | `manifest.json` is regenerated with `by_year` mapping |
+
+On Vercel, filesystem JSON writes may be skipped (read-only FS); the Redis snapshot is written immediately. Commit the JSON file (via `yarn weeks:snapshot` locally) and deploy — after that all environments read the file directly.
+
+**Week-end handoff:** On each populate tick, `finalizeRecentlyConcludedWeek()` copies the previous week’s last cacheable Redis merged cache into `{year}-w{nn}.json` via `persistWeekSnapshot()` — no API refetch for past weeks.
+
+Local and Vercel use the **same env var names** and the **same `lib/` read/write code** — `.env` locally (loaded by `next.config.mjs`), Vercel dashboard in production. API routes use `runtime = "nodejs"` for Redis. Set `REDIS_TLS=false` for plain TCP Redis Cloud endpoints (default).
+
+**Historical bootstrap (weeks 1–20):** `yarn weeks:import-historical` extracts pre-dynamic `lib/data.ts` from git commit `bd4a34c` into `data/weeks/2026/`. Optional dev seed: `yarn cache:seed-from-json` pushes JSON into live Redis merged keys (dev convenience only).
+
+**Populate Redis cache (current week only):** `yarn cache:populate` refreshes **only the current report week** via live provider queries. Past weeks are never touched. Optional filter must match the current week: `yarn cache:populate -- 2026 21`. Uses the same `populateMissingWeeks()` service as the HTTP cron route. HTTP: `POST /api/cron/populate-cache` with `Authorization: Bearer $CRON_SECRET`. Vercel cron hits the same route via GET every **30 minutes** (`*/30 * * * *`).
+
+**Validate JSON coverage:** `yarn weeks:validate` — exits 1 if any concluded week is missing a JSON file.
+
+**Clear then populate:** `yarn cache:clear` wipes Redis keys; `yarn cache:populate` refills **current week only**. One week: `yarn cache:clear 2026 21` then `yarn cache:populate`.
+
+**Cron:** Vercel cron hits `/api/cron/populate-cache` every **30 minutes**. Requires **Vercel Pro** for sub-hourly schedules (Hobby is daily-only).
 
 Cron behaviour (all week logic uses **Australia/Sydney**):
 
-| Week type | Cron action |
-|-----------|-------------|
-| Concluded + cached (`finalized: true`) | Skip |
-| Concluded + missing / not finalized | Query metrics and cache permanently |
-| Current week, cache &lt; 30 min old | Skip |
-| Current week, stale or missing | Invalidate, rebuild, cache with 40 min TTL |
-| Just-ended previous week | Finalize once on week rollover |
+| Action | When |
+|--------|------|
+| Finalize previous week → JSON | Start of each populate tick (no API queries) |
+| Skip populate | Current week cache &lt; 30 min old and `cacheable` |
+| Refresh current week | Current week stale or missing |
 
-**Manual refresh:** Report pages show a **Refresh** button (header, rightmost). It clears the Redis cache for that week, rebuilds metrics, and reloads the page. A Redis refresh lock (`kwh-reports:refresh-lock:{year}:{week}`) prevents duplicate cron/manual runs; concurrent requests return HTTP 409.
+**Manual refresh:** Available for the **current week only**. Concluded weeks return JSON snapshot status — no live provider refetch.
 
-**Clear Redis cache:** `yarn cache:clear` (all weeks) or `yarn cache:clear -- 2026 19` (one week). Should finish in a few seconds and prints connect/scan timing; if it hangs, check `REDIS_HOST`, `REDIS_PORT`, and `REDIS_TLS` (Redis Cloud port `19947` usually needs `REDIS_TLS=false`). HTTP: `GET /api/cron/clear-cache` with `Authorization: Bearer $CRON_SECRET` — optional `?year=2026&week=19`.
+**Clear Redis cache:** `yarn cache:clear` (all keys) or `yarn cache:clear 2026 19` (one week). Clears `week`, `provider`, `humio-checkpoint`, `refresh-lock`, and `populate-cursor` keys.
+
+**Timeouts:** CT fast tick capped at `METRICS_CT_TIMEOUT_MS` (default 5 min). Humio uses Redis checkpoints (~270s per HTTP/cron tick, 20 min total per week). Pages use `maxDuration = 60` and never block on full assembly.
 
 **Commercetools concurrency:** First-time-buyer lookups run at low concurrency (`CT_EMAIL_BATCH_SIZE=3`) with retries to avoid connect-timeout log floods after a cache clear. Partial CT failures keep other metrics (e.g. total orders) and mark the report non-cacheable.
 

@@ -2,11 +2,7 @@ import "server-only"
 
 import { getReportCache } from "@/lib/cache"
 import { metricsLog } from "@/lib/logging/metrics-logger"
-import { nowInReportTz } from "@/lib/timezone"
-import {
-  getCurrentReportWeek,
-  listConcludedReportWeeks,
-} from "@/lib/weeks"
+import { getCurrentReportWeek } from "@/lib/weeks"
 import { refreshWeekIfNeeded, type WeekRefreshResult } from "./week-refresh"
 
 export interface CronRefreshSummary {
@@ -17,44 +13,9 @@ export interface CronRefreshSummary {
   errors: Array<{ year: number; week: number; message: string }>
 }
 
-export async function planCronWeeks(
-  now = nowInReportTz()
-): Promise<Array<{ year: number; week: number; priority: number }>> {
-  const current = getCurrentReportWeek(now)
-  const plan: Array<{ year: number; week: number; priority: number }> = [
-    { year: current.year, week: current.week, priority: 0 },
-  ]
-
-  if (current.week > 1) {
-    plan.push({ year: current.year, week: current.week - 1, priority: 1 })
-  }
-
-  const seen = new Set(plan.map(({ year, week }) => `${year}:${week}`))
-
-  for (const { year, week } of (await listConcludedWeeksWithoutCache(now)).slice(0, 2)) {
-    const key = `${year}:${week}`
-    if (seen.has(key)) continue
-    seen.add(key)
-    plan.push({ year, week, priority: 2 })
-  }
-
-  return plan.sort((a, b) => a.priority - b.priority)
-}
-
-async function listConcludedWeeksWithoutCache(
-  now = nowInReportTz()
-): Promise<Array<{ year: number; week: number }>> {
-  const cache = getReportCache()
-  const missing: Array<{ year: number; week: number }> = []
-
-  for (const { year, week } of listConcludedReportWeeks(now)) {
-    const existing = await cache.get(year, week)
-    if (!existing?.report || existing.status !== "ready" || !existing.finalized) {
-      missing.push({ year, week })
-    }
-  }
-
-  return missing
+export async function planCronWeeks(): Promise<Array<{ year: number; week: number; priority: number }>> {
+  const current = getCurrentReportWeek()
+  return [{ year: current.year, week: current.week, priority: 0 }]
 }
 
 export async function runCronRefresh(): Promise<CronRefreshSummary> {

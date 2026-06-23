@@ -77,3 +77,11 @@ export async function getRefreshLock(
   const raw = await redis.get(weekRefreshLockKey(year, week))
   return raw ? (JSON.parse(raw) as RefreshLockPayload) : null
 }
+
+export async function touchRefreshLock(year: number, week: number): Promise<void> {
+  const redis = await getRedisReady()
+  const key = weekRefreshLockKey(year, week)
+  const raw = await redis.get(key)
+  if (!raw) return
+  await redis.set(key, raw, "EX", REFRESH_LOCK_TTL_SECONDS)
+}

@@ -1,6 +1,7 @@
 import "server-only"
 
 import { metricsLog } from "@/lib/logging/metrics-logger"
+import { isTransientCtError } from "./ct-errors"
 import {
   CT_FETCH_TIMEOUT_MS,
   CT_MAX_RETRIES,
@@ -56,35 +57,8 @@ function retryDelayMs(attempt: number, retryAfterHeader: string | null): number 
   return CT_RETRY_BASE_MS * 2 ** attempt
 }
 
-function isTransientCtError(error: unknown, status?: number): boolean {
-  if (status !== undefined && (status === 429 || status === 503)) {
-    return true
-  }
-
-  if (!(error instanceof Error)) return false
-
-  const message = error.message
-  const cause = error.cause
-
-  if (message.includes("fetch failed")) return true
-  if (message.includes("Connect Timeout")) return true
-  if (message.includes("UND_ERR_CONNECT_TIMEOUT")) return true
-  if (message.includes("ETIMEDOUT")) return true
-  if (message.includes("ECONNRESET")) return true
-  if (message.includes("EAI_AGAIN")) return true
-  if (message.includes("AbortError")) return true
-  if (message.includes("timed out")) return true
-
-  if (cause instanceof Error) {
-    const causeMessage = cause.message
-    const causeCode =
-      "code" in cause && typeof cause.code === "string" ? cause.code : ""
-    if (causeCode === "UND_ERR_CONNECT_TIMEOUT") return true
-    if (causeMessage.includes("Connect Timeout")) return true
-    if (causeMessage.includes("ETIMEDOUT")) return true
-  }
-
-  return false
+function isTransientCtErrorLocal(error: unknown, status?: number): boolean {
+  return isTransientCtError(error, status)
 }
 
 function formatCtError(error: unknown): string {
@@ -156,7 +130,7 @@ async function executeGraphQLInner<T>(
           `Commercetools GraphQL request failed: ${res.status} ${errorText}`
         )
 
-        if (!isTransientCtError(lastError, res.status) || attempt === CT_MAX_RETRIES) {
+        if (!isTransientCtErrorLocal(lastError, res.status) || attempt === CT_MAX_RETRIES) {
           throw lastError
         }
 
@@ -175,7 +149,7 @@ async function executeGraphQLInner<T>(
       lastError =
         error instanceof Error ? error : new Error(formatCtError(error))
 
-      if (!isTransientCtError(error) || attempt === CT_MAX_RETRIES) {
+      if (!isTransientCtErrorLocal(error) || attempt === CT_MAX_RETRIES) {
         throw lastError
       }
 

@@ -2,8 +2,8 @@ import "server-only"
 
 import type { CommercetoolsMetrics } from "@/lib/types/metrics"
 import { metricsLog } from "@/lib/logging/metrics-logger"
-import { CT_FTB_TIMEOUT_MS } from "./constants"
-import { runMetric, type MetricMode } from "./run-metric"
+import { CT_FTB_TIMEOUT_MS, runMetricResilient } from "./run-metric-resilient"
+import type { MetricMode } from "./run-metric"
 
 const FIRST_TIME_BUYERS_MODE: MetricMode = "FIRST_TIME_BUYERS"
 
@@ -29,29 +29,6 @@ const FAST_RESULT_KEYS = {
   first_time_buyers: true,
 } as const
 
-async function runMetricWithTimeout(
-  mode: MetricMode,
-  startISO: string,
-  endISO: string,
-  timeoutMs: number
-): Promise<number> {
-  let timer: ReturnType<typeof setTimeout> | undefined
-
-  try {
-    return await Promise.race([
-      runMetric(mode, startISO, endISO),
-      new Promise<number>((_, reject) => {
-        timer = setTimeout(
-          () => reject(new Error(`${mode} timed out after ${timeoutMs}ms`)),
-          timeoutMs
-        )
-      }),
-    ])
-  } finally {
-    if (timer) clearTimeout(timer)
-  }
-}
-
 /**
  * Semantic notes (match existing dashboard labels):
  * - total_registered_users: customers created in the week, not cumulative platform total
@@ -69,7 +46,7 @@ export async function fetchCommercetoolsMetrics(
   await Promise.all(
     FAST_METRIC_SEQUENCE.map(async ({ mode, key }) => {
       try {
-        results[key] = await runMetric(mode, startISO, endISO)
+        results[key] = await runMetricResilient(mode, startISO, endISO)
       } catch (error) {
         failedModes.push(mode)
         metricsLog.warn("commercetools", "Metric mode failed", {
@@ -81,11 +58,11 @@ export async function fetchCommercetoolsMetrics(
   )
 
   try {
-    results.first_time_buyers = await runMetricWithTimeout(
+    results.first_time_buyers = await runMetricResilient(
       FIRST_TIME_BUYERS_MODE,
       startISO,
       endISO,
-      CT_FTB_TIMEOUT_MS
+      { timeoutMs: CT_FTB_TIMEOUT_MS }
     )
   } catch (error) {
     failedModes.push(FIRST_TIME_BUYERS_MODE)
@@ -103,9 +80,9 @@ export async function fetchCommercetoolsMetrics(
     },
     customers: {
       first_time_buyers: results.first_time_buyers ?? 0,
-      returning_customers: results.returning_customers ?? 0,
       guest_checkouts: results.guest_checkouts ?? 0,
       registered_user_orders: results.registered_user_orders ?? 0,
+      returning_customers: results.returning_customers ?? 0,
       total_registered_users: results.total_registered_users ?? 0,
     },
     ...(failedModes.length > 0 ? { failedModes } : {}),

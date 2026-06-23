@@ -2,12 +2,21 @@
   "name": "my-project",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "cache:clear": "node scripts/clear-redis-cache.mjs"
+    "cache:clear": "node scripts/clear-redis-cache.mjs",
+    "cache:populate": "tsx --tsconfig scripts/tsconfig.populate.json scripts/populate-redis-cache.mts",
+    "cache:seed-from-json": "tsx --tsconfig scripts/tsconfig.populate.json scripts/seed-redis-from-json.mts",
+    "weeks:import-historical": "tsx --tsconfig scripts/tsconfig.populate.json scripts/import-historical-weeks.mts",
+    "weeks:snapshot": "tsx --tsconfig scripts/tsconfig.populate.json scripts/snapshot-week-to-json.mts",
+    "weeks:validate": "tsx --tsconfig scripts/tsconfig.populate.json scripts/validate-week-json.mts",
+    "weeks:migrate-json": "tsx --tsconfig scripts/tsconfig.populate.json scripts/migrate-week-json-names.mts"
   },
   "dependencies": {
     "@date-fns/tz": "^1.5.0",
@@ -70,6 +79,7 @@
     "@types/react-dom": "^19",
     "postcss": "^8.5",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.4",
     "typescript": "5.7.3"
   }
 }

@@ -133,7 +133,7 @@ function rowKey(event: HumioEvent): string | null {
   return `${hook}:${status}`
 }
 
-function mergeAllGroupByRows(rows: HumioEvent[]): HumioEvent[] {
+export function mergeAllGroupByRows(rows: HumioEvent[]): HumioEvent[] {
   const merged = new Map<string, HumioEvent>()
 
   for (const row of rows) {

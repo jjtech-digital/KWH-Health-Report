@@ -36,6 +36,9 @@ next-env.d.ts
 .vscode/
 .idea/
 
+# Script cache (historical import temp)
+scripts/.cache/
+
 # OS
 Thumbs.db
 # Local Netlify folder

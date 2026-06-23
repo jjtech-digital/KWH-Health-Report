@@ -65,6 +65,8 @@ function emitLog(
   error?: unknown,
   context?: Record<string, unknown>
 ): void {
+  if (process.env.METRICS_LOG_QUIET === "1" && level === "info") return
+
   const payload: Record<string, unknown> = {
     level,
     tag: `[kwh-reports][${source}]`,

@@ -1,0 +1,119 @@
+{
+  "week_number": 17,
+  "year": 2026,
+  "computed_at": "2026-05-31T13:59:59.999Z",
+  "traffic": {
+    "total_views": 492611,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 55172
+      },
+      {
+        "path": "/offers",
+        "views": 9515
+      },
+      {
+        "path": "/search",
+        "views": 7251
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 5805
+      },
+      {
+        "path": "/product/wolstead-swift-glass-4-in-1-air-fryer-matte-black",
+        "views": 4952
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 162303,
+        "percentage": 43.29
+      },
+      {
+        "name": "Safari",
+        "views": 142990,
+        "percentage": 38.14
+      },
+      {
+        "name": "Edge",
+        "views": 12253,
+        "percentage": 3.27
+      },
+      {
+        "name": "Firefox",
+        "views": 4756,
+        "percentage": 1.27
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 11375,
+        "percentage": 3.03
+      },
+      {
+        "name": "Other",
+        "views": 41251,
+        "percentage": 11
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 169,
+    "error_rate": "0.0343%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 50,
+        "status": 401
+      },
+      {
+        "path": "/frontastic/action/reviews/relatedReviews",
+        "failures": 35,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/ct-auth/getAnonymousAccessToken",
+        "failures": 34,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 26,
+        "status": 503
+      },
+      {
+        "path": "/frontastic/action/checkout/validatestock",
+        "failures": 24,
+        "status": 400
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 10000,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 26,
+    "active_carts": 42915
+  },
+  "customers": {
+    "first_time_buyers": 462,
+    "returning_customers": 237,
+    "guest_checkouts": 743,
+    "registered_user_orders": 9510,
+    "total_registered_users": 1656,
+    "conversion_rate": "1.96%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.1s",
+      "fid": "188ms",
+      "cls": "0.85"
+    },
+    "mobile": {
+      "lcp": "3.3s",
+      "fid": "260ms",
+      "cls": "0.08"
+    }
+  }
+}

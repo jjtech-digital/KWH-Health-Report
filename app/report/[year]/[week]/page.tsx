@@ -9,6 +9,9 @@ import { CustomerOrders } from "@/components/report/customer-orders"
 import { EcommerceStats } from "@/components/report/ecommerce-stats"
 import { WebVitals } from "@/components/report/web-vitals"
 
+export const runtime = "nodejs"
+export const maxDuration = 60
+
 interface ReportPageProps {
   params: Promise<{ year: string; week: string }>
 }

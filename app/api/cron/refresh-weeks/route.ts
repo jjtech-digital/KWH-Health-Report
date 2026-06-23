@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server"
-import { runCronRefresh } from "@/lib/services/refresh-weeks"
+import {
+  METRICS_INVOCATION_BUDGET_MS,
+  populateMissingWeeks,
+} from "@/lib/services/populate-weeks"
 
 export const runtime = "nodejs"
 export const maxDuration = 300
@@ -13,7 +16,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const summary = await runCronRefresh()
+    const summary = await populateMissingWeeks({
+      deadlineMs: METRICS_INVOCATION_BUDGET_MS,
+      source: "cron",
+    })
     return NextResponse.json(summary)
   } catch (error) {
     const message = error instanceof Error ? error.message : "Cron refresh failed"

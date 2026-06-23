@@ -34,7 +34,10 @@ export const CT_INTERVAL_HOURS_ORDERS = 1
 export const CT_INTERVAL_HOURS_FTB = 4
 
 /** Per-item retries inside runInBatches (e.g. email lifetime lookups). */
-export const CT_EMAIL_RETRIES_PER_ITEM = 2
+export const CT_EMAIL_RETRIES_PER_ITEM = 4
 
-/** Abort FIRST_TIME_BUYERS after this — avoids blocking page load for minutes. */
-export const CT_FTB_TIMEOUT_MS = 90_000
+/** Metric-level retries after a mode fails (transient / timeout). */
+export const CT_METRIC_MAX_RETRIES = 3
+
+/** Base delay for metric-level exponential backoff (ms). */
+export const CT_METRIC_RETRY_BASE_MS = 2_000

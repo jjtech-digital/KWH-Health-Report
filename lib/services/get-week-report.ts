@@ -1,150 +1,142 @@
 import "server-only"
 
+import {
+  readConcludedWeek,
+  readWeekFromJsonFile,
+  readWeekFromRedisSnapshot,
+} from "@/lib/data/week-json-store"
 import type { HealthReportWeek } from "@/lib/types/health-report"
 import { getReportCache } from "@/lib/cache"
-import { getRefreshLock } from "@/lib/cache/refresh-lock"
 import { weekReportKey } from "@/lib/cache/redis-keys"
 import { metricsLog } from "@/lib/logging/metrics-logger"
-import { refreshWeekIfNeeded } from "./week-refresh"
+import {
+  isCurrentReportWeek,
+  isWeekConcluded,
+} from "@/lib/weeks"
+import { emptyHealthReportWeek } from "./merge-provider-caches"
+import { readWeekReportFromCache } from "./week-refresh"
 
-const IN_PROGRESS_POLL_MS = 2_000
-const IN_PROGRESS_MAX_WAIT_MS = 120_000
+const IN_PROGRESS_MAX_WAIT_MS = 1_200_000
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function waitForCachedReport(
-  year: number,
-  week: number
-): Promise<HealthReportWeek | null> {
-  const cache = getReportCache()
-  const deadline = Date.now() + IN_PROGRESS_MAX_WAIT_MS
-
-  while (Date.now() < deadline) {
-    const cached = await cache.get(year, week)
-    if (cached?.report) {
-      return cached.report
-    }
-
-    const lock = await getRefreshLock(year, week)
-    if (!lock) {
-      return null
-    }
-
-    await sleep(IN_PROGRESS_POLL_MS)
-  }
-
-  return null
-}
+export type WeekReportSource = "redis" | "json-file" | "json-snapshot" | "empty"
 
 export async function getWeekReport(
   year: number,
   week: number,
   options?: { force?: boolean }
 ): Promise<HealthReportWeek> {
-  const cache = getReportCache()
-  const cacheKey = weekReportKey(year, week)
+  if (options?.force) {
+    if (isWeekConcluded(year, week)) {
+      const report = await readConcludedWeek(year, week)
+      return report ?? emptyHealthReportWeek(year, week)
+    }
 
-  if (!options?.force) {
+    const { refreshWeekIfNeeded } = await import("./week-refresh")
+    await refreshWeekIfNeeded(year, week, { force: true, source: "manual" })
+    const cache = getReportCache()
+    const cached = await cache.get(year, week)
+    if (cached?.report) {
+      return cached.report
+    }
+  }
+
+  if (isCurrentReportWeek(year, week)) {
     try {
-      const cached = await cache.get(year, week)
-      if (cached?.report) {
-        return cached.report
+      const partial = await readWeekReportFromCache(year, week)
+      if (partial?.report) {
+        return partial.report
       }
     } catch (error) {
       metricsLog.error("redis", "cache get failed", error, {
         year,
         week,
-        key: cacheKey,
+        key: weekReportKey(year, week),
         operation: "get",
       })
     }
+
+    return emptyHealthReportWeek(year, week)
   }
 
-  const result = await refreshWeekIfNeeded(year, week, {
-    force: options?.force,
-    source: options?.force ? "manual" : "page",
-  })
-
-  if (result.action === "skipped") {
-    if (result.reason === "in_progress") {
-      const waited = await waitForCachedReport(year, week)
-      if (waited) {
-        return waited
-      }
-
-      const retry = await refreshWeekIfNeeded(year, week, {
-        force: options?.force,
-        source: options?.force ? "manual" : "page",
-      })
-
-      if (retry.action === "refreshed" || retry.action === "skipped") {
-        const cached = await cache.get(year, week)
-        if (cached?.report) {
-          return cached.report
-        }
-      }
-
-      if (retry.action === "error") {
-        const cached = await cache.get(year, week)
-        if (cached?.report) {
-          return cached.report
-        }
-      }
-
-      throw new Error(`Report refresh in progress for ${year} w${week}`)
-    }
-
-    const cached = await cache.get(year, week)
-    if (cached?.report) {
-      return cached.report
-    }
+  if (isWeekConcluded(year, week)) {
+    const report = await readConcludedWeek(year, week)
+    if (report) return report
   }
 
-  if (result.action === "error") {
-    const cached = await cache.get(year, week)
-    if (cached?.report) {
-      if (result.stalePreserved) {
-        metricsLog.warn("assembler", "Serving stale report after refresh failure", {
-          year,
-          week,
-          computedAt: cached.computedAt,
-          reason: result.reason,
-        })
-      }
-      return cached.report
-    }
-    throw new Error(result.reason ?? `Failed to load report for ${year} w${week}`)
-  }
-
-  const cached = await cache.get(year, week)
-  if (cached?.report) {
-    return cached.report
-  }
-
-  throw new Error(`Report unavailable for ${year} w${week}`)
+  return emptyHealthReportWeek(year, week)
 }
 
 export async function getWeekReportMetadata(
   year: number,
   week: number
-): Promise<{ computedAt: string | null; status: string; finalized: boolean }> {
-  try {
-    const cache = getReportCache()
-    const cached = await cache.get(year, week)
-    return {
-      computedAt: cached?.computedAt ?? null,
-      status: cached?.status ?? "missing",
-      finalized: cached?.finalized ?? false,
+): Promise<{
+  computedAt: string | null
+  status: string
+  finalized: boolean
+  cacheable: boolean
+  source: WeekReportSource
+}> {
+  if (isCurrentReportWeek(year, week)) {
+    try {
+      const partial = await readWeekReportFromCache(year, week)
+      if (partial?.report) {
+        return {
+          computedAt: partial.computedAt,
+          status: partial.status,
+          finalized: partial.finalized,
+          cacheable: partial.cacheable ?? false,
+          source: "redis",
+        }
+      }
+    } catch (error) {
+      metricsLog.error("redis", "cache metadata get failed", error, {
+        year,
+        week,
+        key: weekReportKey(year, week),
+        operation: "getMetadata",
+      })
     }
-  } catch (error) {
-    metricsLog.error("redis", "cache metadata get failed", error, {
-      year,
-      week,
-      key: weekReportKey(year, week),
-      operation: "getMetadata",
-    })
-    return { computedAt: null, status: "missing", finalized: false }
+
+    return {
+      computedAt: null,
+      status: "missing",
+      finalized: false,
+      cacheable: false,
+      source: "empty",
+    }
+  }
+
+  if (isWeekConcluded(year, week)) {
+    const fromFile = readWeekFromJsonFile(year, week)
+    if (fromFile) {
+      return {
+        computedAt: fromFile.computed_at,
+        status: "ready",
+        finalized: true,
+        cacheable: true,
+        source: "json-file",
+      }
+    }
+
+    const fromSnapshot = await readWeekFromRedisSnapshot(year, week)
+    if (fromSnapshot) {
+      return {
+        computedAt: fromSnapshot.computed_at,
+        status: "ready",
+        finalized: true,
+        cacheable: true,
+        source: "json-snapshot",
+      }
+    }
+  }
+
+  return {
+    computedAt: null,
+    status: "missing",
+    finalized: false,
+    cacheable: false,
+    source: "empty",
   }
 }
+
+export { IN_PROGRESS_MAX_WAIT_MS }

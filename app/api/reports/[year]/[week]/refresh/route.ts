@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 import { metricsLog } from "@/lib/logging/metrics-logger"
-import { getWeekReport } from "@/lib/services/get-week-report"
+import { getWeekReportMetadata } from "@/lib/services/get-week-report"
 import { refreshWeekIfNeeded } from "@/lib/services/week-refresh"
-import { parseWeekParam, parseYearParam } from "@/lib/weeks"
+import { isWeekConcluded, parseWeekParam, parseYearParam } from "@/lib/weeks"
 
 export const runtime = "nodejs"
 export const maxDuration = 300
@@ -20,6 +20,17 @@ export async function POST(_request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Invalid year or week" }, { status: 400 })
   }
 
+  if (isWeekConcluded(year, week)) {
+    const meta = await getWeekReportMetadata(year, week)
+    return NextResponse.json({
+      status: meta.source === "empty" ? "missing" : "ready",
+      computedAt: meta.computedAt,
+      cacheable: meta.cacheable,
+      source: meta.source,
+      message: "Concluded weeks are served from JSON snapshots — live refresh is not available.",
+    })
+  }
+
   try {
     const result = await refreshWeekIfNeeded(year, week, { force: true, source: "manual" })
 
@@ -28,14 +39,22 @@ export async function POST(_request: Request, context: RouteContext) {
       return NextResponse.json({ status: "in_progress" }, { status: 409 })
     }
 
+    if (result.action === "error" && result.reason === "incomplete_report") {
+      return NextResponse.json(
+        { status: "refreshing", reason: result.reason },
+        { status: 202 }
+      )
+    }
+
     if (result.action === "error") {
       return NextResponse.json({ error: result.reason }, { status: 500 })
     }
 
-    const report = await getWeekReport(year, week)
+    const meta = await getWeekReportMetadata(year, week)
     return NextResponse.json({
-      status: "ready",
-      computedAt: report.computed_at,
+      status: meta.cacheable ? "ready" : "refreshing",
+      computedAt: meta.computedAt,
+      cacheable: meta.cacheable,
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to refresh report"

@@ -1,6 +1,6 @@
 import "server-only"
 
-import { CT_BATCH_GAP_MS, CT_BATCH_SIZE } from "./constants"
+import { CT_BATCH_GAP_MS, CT_BATCH_SIZE, CT_RETRY_BASE_MS } from "./constants"
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -20,7 +20,7 @@ async function mapWithRetries<T, R>(
     } catch (error) {
       lastError = error
       if (attempt < retriesPerItem) {
-        await sleep(500 * (attempt + 1))
+        await sleep(CT_RETRY_BASE_MS * 2 ** attempt)
       }
     }
   }

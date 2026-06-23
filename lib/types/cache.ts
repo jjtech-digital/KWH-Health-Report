@@ -10,6 +10,8 @@ export interface CachedWeekReport {
   status: ReportCacheStatus
   /** True once the report week has ended at write time */
   finalized: boolean
+  /** All providers succeeded and Humio reliability is valid */
+  cacheable?: boolean
   refreshedBy?: RefreshSource
   error?: string
 }

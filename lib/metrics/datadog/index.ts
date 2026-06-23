@@ -12,21 +12,43 @@ export async function fetchDatadogMetrics(
 ): Promise<DatadogMetrics> {
   const startedAt = Date.now()
 
+  const [trafficResult, vitalsResult, paymentsResult] = await Promise.allSettled([
+    fetchTrafficMetrics(startISO, endISO),
+    fetchWebVitalsMetrics(startISO, endISO),
+    fetchPaymentFailureLogs(startISO, endISO),
+  ])
+
   let traffic = emptyTraffic()
-  try {
-    traffic = await fetchTrafficMetrics(startISO, endISO)
-  } catch (error) {
-    metricsLog.error("datadog", "Traffic metrics failed", error, { startISO, endISO })
+  if (trafficResult.status === "fulfilled") {
+    traffic = trafficResult.value
+  } else {
+    metricsLog.error("datadog", "Traffic metrics failed", trafficResult.reason, {
+      startISO,
+      endISO,
+    })
   }
 
   let web_vitals = emptyWebVitals()
-  try {
-    web_vitals = await fetchWebVitalsMetrics(startISO, endISO)
-  } catch (error) {
-    metricsLog.error("datadog", "Web vitals metrics failed", error, { startISO, endISO })
+  if (vitalsResult.status === "fulfilled") {
+    web_vitals = vitalsResult.value
+  } else {
+    metricsLog.error("datadog", "Web vitals metrics failed", vitalsResult.reason, {
+      startISO,
+      endISO,
+    })
   }
 
-  const payments = await fetchPaymentFailureLogs(startISO, endISO)
+  const payments =
+    paymentsResult.status === "fulfilled"
+      ? paymentsResult.value
+      : { declined: 0, approved: 0 }
+
+  if (paymentsResult.status === "rejected") {
+    metricsLog.error("datadog", "Payment logs failed", paymentsResult.reason, {
+      startISO,
+      endISO,
+    })
+  }
 
   metricsLog.info("datadog", "Metrics completed", {
     total_views: traffic.total_views,

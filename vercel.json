@@ -1,7 +1,7 @@
 {
   "crons": [
     {
-      "path": "/api/cron/refresh-weeks",
+      "path": "/api/cron/populate-cache",
       "schedule": "*/30 * * * *"
     }
   ]

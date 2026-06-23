@@ -135,8 +135,10 @@ async function fetchReliability(
   breakdownFailed: boolean
   sliceStats: { total: SliceRunStats; breakdown: SliceRunStats }
 }> {
-  const totalResult = await fetchTotalRequests(startMs, endMs)
-  const breakdownResult = await fetchErrorBreakdown(startMs, endMs)
+  const [totalResult, breakdownResult] = await Promise.all([
+    fetchTotalRequests(startMs, endMs),
+    fetchErrorBreakdown(startMs, endMs),
+  ])
 
   return {
     totalRequests: totalResult.total,
@@ -174,15 +176,18 @@ export async function fetchHumioMetrics(
   const startedAt = Date.now()
   const { startMs, endMs } = toEpochRange(startISO, endISO)
 
+  const [reliabilityResult, payments] = await Promise.all([
+    fetchReliability(startMs, endMs),
+    parsePaymentFailures(startMs, endMs),
+  ])
+
   const {
     totalRequests,
     totalFailed,
     errorBreakdownEvents,
     breakdownFailed,
     sliceStats,
-  } = await fetchReliability(startMs, endMs)
-
-  const payments = await parsePaymentFailures(startMs, endMs)
+  } = reliabilityResult
 
   const reliabilityFailed = computeReliabilityFailed(
     totalRequests,

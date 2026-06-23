@@ -7,6 +7,9 @@ import {
 import { TZDate } from "@date-fns/tz"
 import { REPORT_TIMEZONE, nowInReportTz } from "@/lib/timezone"
 
+/** First calendar year with report weeks (week 1 anchored Feb 2). */
+export const REPORT_FIRST_YEAR = 2026
+
 export interface WeekEntry {
   year: number
   week: number
@@ -70,6 +73,23 @@ export function getCurrentReportWeek(now = nowInReportTz()): { year: number; wee
   }
 
   return { year, week: 1 }
+}
+
+/** Report week immediately before `current` (cross-year when current is week 1). */
+export function getPreviousReportWeek(
+  current: { year: number; week: number }
+): { year: number; week: number } | null {
+  if (current.week > 1) {
+    return { year: current.year, week: current.week - 1 }
+  }
+
+  const previousYear = current.year - 1
+  const lastWeek = getLastReportWeekOfYear(previousYear)
+  if (lastWeek <= 0) {
+    return null
+  }
+
+  return { year: previousYear, week: lastWeek }
 }
 
 export function isCurrentReportWeek(
@@ -144,7 +164,7 @@ export function listConcludedReportWeeks(
   const current = getCurrentReportWeek(now)
   const weeks: Array<{ year: number; week: number }> = []
 
-  for (let y = current.year; y >= current.year; y--) {
+  for (let y = current.year; y >= REPORT_FIRST_YEAR; y--) {
     const maxWeek = getMaxReportWeekForYear(y, now)
     for (let w = 1; w <= maxWeek; w++) {
       if (!isWeekConcluded(y, w, now)) {
@@ -164,12 +184,21 @@ export function listConcludedReportWeeks(
   return weeks
 }
 
+export function listReportYears(now = nowInReportTz()): number[] {
+  const current = getCurrentReportWeek(now)
+  const years: number[] = []
+  for (let y = current.year; y >= REPORT_FIRST_YEAR; y--) {
+    years.push(y)
+  }
+  return years
+}
+
 export function generateReportIndex(): YearGroup[] {
   const now = nowInReportTz()
   const current = getCurrentReportWeek(now)
   const years: YearGroup[] = []
 
-  for (let y = current.year; y >= current.year; y--) {
+  for (let y = current.year; y >= REPORT_FIRST_YEAR; y--) {
     const maxWeek = getMaxReportWeekForYear(y, now)
     const monthMap = new Map<string, WeekEntry[]>()
 
