@@ -1,9 +1,9 @@
 import { ShieldAlert } from "lucide-react"
-import { healthData } from "@/lib/data"
+import type { Reliability } from "@/lib/types/health-report"
 
-export function SystemHealth({weekNumber}: Readonly<{weekNumber: number}>) {
-  const { failed_requests, error_rate, top_failed_pages } = healthData?.find((data) => data?.week_number === weekNumber)?.reliability || { failed_requests: 0, error_rate: "0%", top_failed_pages: [] };
-  const hasFailures = failed_requests > 0
+export function SystemHealth({ reliability }: Readonly<{ reliability: Reliability }>) {
+  const { failed_requests, error_rate, top_failed_pages } = reliability
+  const hasFailures = failed_requests > 0 || top_failed_pages.length > 0
   const maxFailures = top_failed_pages.length > 0 ? top_failed_pages[0].failures : 1
 
   return (
@@ -40,12 +40,11 @@ export function SystemHealth({weekNumber}: Readonly<{weekNumber: number}>) {
 
         <div className="h-px bg-border" />
 
-        {/* Top 5 Failed Page Requests */}
         <div>
           <p className="text-xs font-medium text-muted-foreground mb-3">Top 5 Failed Requests</p>
           <div className="flex flex-col gap-2.5">
             {top_failed_pages.map((page, index) => (
-              <div key={page.path} className="flex flex-col gap-1">
+              <div key={`${page.path}-${page.status}`} className="flex flex-col gap-1">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-2 text-sm">
                   <div className="flex items-center gap-2 min-w-0">
                     <span className="text-xs text-muted-foreground w-4 shrink-0">{index + 1}.</span>
@@ -55,9 +54,7 @@ export function SystemHealth({weekNumber}: Readonly<{weekNumber: number}>) {
                     <span className="inline-flex items-center rounded px-1.5 py-0.5 text-xs font-medium bg-destructive/10 text-destructive">
                       {page.status}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      {page.failures} fails
-                    </span>
+                    <span className="text-xs text-muted-foreground">{page.failures} fails</span>
                   </div>
                 </div>
                 <div className="relative h-1.5 w-100 rounded-full bg-muted overflow-hidden ml-6">

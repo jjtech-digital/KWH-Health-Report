@@ -59,27 +59,39 @@ A weekly platform health monitoring dashboard for [Kitchen Warehouse](https://ki
 ## Project Structure
 
 ```
+├── middleware.ts              # Session auth guard
+├── vercel.json                # Cron schedules
+├── .env.example               # Required env vars template
 ├── app/
-│   ├── globals.css            # Tailwind directives & CSS custom properties (theme tokens)
-│   ├── layout.tsx             # Root layout — fonts, metadata, viewport
-│   ├── page.tsx               # Home page — password gate → report index
-│   └── report/
-│       └── [year]/
-│           └── [week]/
-│               └── page.tsx   # Dynamic weekly report page
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.tsx               # Report index (Server Component)
+│   ├── login/page.tsx
+│   ├── api/
+│   │   ├── auth/login/route.ts
+│   │   ├── auth/logout/route.ts
+│   │   ├── cron/refresh-weeks/route.ts
+│   │   └── reports/[year]/[week]/route.ts
+│   └── report/[year]/[week]/
+│       ├── page.tsx           # Dynamic weekly report
+│       ├── loading.tsx
+│       └── error.tsx
 ├── components/
-│   ├── customer-orders.tsx    # Customer acquisition & order breakdown cards
-│   ├── ecommerce-stats.tsx    # Orders, payment failures, active carts
-│   ├── kw-logo.tsx            # Kitchen Warehouse logo component
-│   ├── password-gate.tsx      # Client-side password authentication gate
-│   ├── report-index.tsx       # Browsable month/week accordion index
-│   ├── system-health.tsx      # Failed requests, error rate, top failures
-│   ├── traffic-overview.tsx   # Page views, browser breakdown, top pages
-│   └── web-vitals.tsx         # LCP, FID, CLS for mobile & desktop
+│   ├── auth/login-form.tsx
+│   ├── report/                # Section components (props-based)
+│   ├── report-index.tsx
+│   └── kw-logo.tsx
 ├── lib/
-│   ├── data.ts                # Static health data array (one entry per week)
-│   ├── utils.ts               # Shared utilities (cn helper for classnames)
-│   └── weeks.ts               # Week date-range calculation & report index generation
+│   ├── types/                 # HealthReportWeek, cache, metrics types
+│   ├── cache/                 # ReportCachePort + Next.js adapter
+│   ├── metrics/
+│   │   ├── commercetools/     # Lifted from fetch-kwh-data sibling
+│   │   ├── humio/
+│   │   └── datadog/
+│   ├── services/              # Assembler, getWeekReport, cron refresh
+│   ├── auth/                  # Session cookie (server + edge)
+│   ├── weeks.ts
+│   └── utils.ts
 ├── public/
 │   └── images/                # Static assets (logo, etc.)
 ├── next.config.mjs            # Next.js config — Cloudinary remote image pattern
@@ -105,15 +117,25 @@ yarn install
 
 ### Environment Variables
 
-Create a `.env.local` file in the project root:
+Copy `.env.example` to `.env` and fill in credentials. Use **`.env` only** — do not create `.env.local`.
 
-```env
-NEXT_PUBLIC_KWH_HEALTH_REPORT=your_password_here
+```bash
+cp .env.example .env
 ```
+
+On Vercel/production, set the same variables in the platform dashboard (the committed `.env` file is for local dev only).
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_KWH_HEALTH_REPORT` | Yes | The password users must enter to access the dashboard. If unset, the app shows a "misconfigured" notice. |
+| `KWH_HEALTH_REPORT_PASSWORD` | Yes | Server-side dashboard password (httpOnly session cookie) |
+| `CRON_SECRET` | Yes (prod) | Bearer token for `/api/cron/*` (refresh, clear cache) |
+| `CT_*` | Yes | Commercetools OAuth + GraphQL (5 vars) |
+| `HUMIO_*` | Yes | Humio QueryJob API for reliability + payment metrics |
+| `DATADOG_*` | Yes | Datadog AP1 RUM + Logs API |
+| `DATADOG_RUM_QUERY` | No | Default `@type:view env:prod` — do not filter by `DATADOG_RUM_APPLICATION_ID` |
+| `REDIS_*` | Yes | Redis cache (`REDIS_HOST`, `REDIS_USERNAME`, `REDIS_PASSWORD`, `REDIS_PORT`, `REDIS_TLS`) |
+
+See [`.env.example`](.env.example) for the full list.
 
 ### Running the Development Server
 
@@ -169,22 +191,24 @@ Separate panels for **Mobile** and **Desktop** showing the three Core Web Vitals
 | Route | Description |
 |-------|-------------|
 | `/` | Home page — shows a filterable, year-tabbed index of all available weekly reports. |
-| `/report/[year]/w[week]` | Individual weekly report dashboard (e.g. `/report/2026/w5`). |
+| `/login` | Password sign-in (redirects to `/` when authenticated) |
+| `/report/[year]/w[week]` | Individual weekly report dashboard (e.g. `/report/2026/w5`) |
 
-Dynamic route parameters (`year`, `week`) are parsed client-side from `useParams()`. Invalid routes show a fallback error card with a link back to the index.
+Report pages are **Server Components** that load data via `getWeekReport()` — Commercetools, Humio, and Datadog queries merged at runtime. Invalid routes show a fallback error card.
 
 ---
 
 ## Authentication
 
-The dashboard is protected by a lightweight **client-side password gate** (`PasswordGate` component):
+The dashboard uses **server-side session auth**:
 
-1. On load, the gate checks `sessionStorage` for a previously unlocked flag.
-2. If not found, a password form is displayed.
-3. The entered password is compared against the `NEXT_PUBLIC_KWH_HEALTH_REPORT` environment variable.
-4. On success, a flag is stored in `sessionStorage` so the user remains unlocked for the browser session.
+1. Unauthenticated users are redirected to `/login`.
+2. `POST /api/auth/login` validates the password against `KWH_HEALTH_REPORT_PASSWORD`.
+3. On success, an **httpOnly cookie** is set (`kwh-health-report-session`).
+4. `middleware.ts` protects `/`, `/report/*`, and `/api/reports/*`.
+5. `POST /api/auth/logout` clears the session.
 
-> **Note:** This is a client-side gate suitable for internal/low-sensitivity dashboards. The password is embedded in the client bundle via the `NEXT_PUBLIC_` prefix. Do not use this for securing sensitive data.
+The password is never exposed in the client bundle.
 
 ---
 
@@ -200,11 +224,41 @@ The dashboard is protected by a lightweight **client-side password gate** (`Pass
 
 ## Data Layer
 
-All report data lives in `lib/data.ts` as a static TypeScript array (`healthData`). Each entry is keyed by `week_number` and contains:
+Metrics are fetched **dynamically at runtime** — no static data file in the repo.
+
+| Source | Module | Metrics |
+|--------|--------|---------|
+| Commercetools GraphQL | `lib/metrics/commercetools/` | Orders, carts, customers |
+| Humio | `lib/metrics/humio/` | Reliability, payment failures |
+| Datadog RUM + Logs | `lib/metrics/datadog/` | Traffic, web vitals, payment logs |
+
+Orchestration: `lib/services/report-assembler.ts` → `getWeekReport()` → **Redis cache** (`kwh-reports:week:{year}:{week}` prefix, TLS via `ioredis`).
+
+Local and Vercel use the **same env var names** — `.env` locally (loaded by `next.config.mjs`), Vercel dashboard in production. API routes use `runtime = "nodejs"` for Redis. Set `REDIS_TLS=false` for plain TCP Redis Cloud endpoints (default).
+
+**Cron:** Vercel cron hits `/api/cron/refresh-weeks` every **30 minutes** (`*/30 * * * *`). Requires **Vercel Pro** for sub-hourly schedules (Hobby is daily-only).
+
+Cron behaviour (all week logic uses **Australia/Sydney**):
+
+| Week type | Cron action |
+|-----------|-------------|
+| Concluded + cached (`finalized: true`) | Skip |
+| Concluded + missing / not finalized | Query metrics and cache permanently |
+| Current week, cache &lt; 30 min old | Skip |
+| Current week, stale or missing | Invalidate, rebuild, cache with 40 min TTL |
+| Just-ended previous week | Finalize once on week rollover |
+
+**Manual refresh:** Report pages show a **Refresh** button (header, rightmost). It clears the Redis cache for that week, rebuilds metrics, and reloads the page. A Redis refresh lock (`kwh-reports:refresh-lock:{year}:{week}`) prevents duplicate cron/manual runs; concurrent requests return HTTP 409.
+
+**Clear Redis cache:** `yarn cache:clear` (all weeks) or `yarn cache:clear -- 2026 19` (one week). Should finish in a few seconds and prints connect/scan timing; if it hangs, check `REDIS_HOST`, `REDIS_PORT`, and `REDIS_TLS` (Redis Cloud port `19947` usually needs `REDIS_TLS=false`). HTTP: `GET /api/cron/clear-cache` with `Authorization: Bearer $CRON_SECRET` — optional `?year=2026&week=19`.
+
+**Commercetools concurrency:** First-time-buyer lookups run at low concurrency (`CT_EMAIL_BATCH_SIZE=3`) with retries to avoid connect-timeout log floods after a cache clear. Partial CT failures keep other metrics (e.g. total orders) and mark the report non-cacheable.
 
 ```ts
-{
+interface HealthReportWeek {
   week_number: number
+  year: number
+  computed_at: string
   traffic: { total_views, top_pages[], browsers[] }
   reliability: { failed_requests, error_rate, top_failed_pages[] }
   ecommerce: { total_orders, payment_failures_declined, payment_failures_approved, active_carts }
@@ -213,6 +267,6 @@ All report data lives in `lib/data.ts` as a static TypeScript array (`healthData
 }
 ```
 
-Week date ranges are calculated dynamically in `lib/weeks.ts` using `date-fns`, with weeks starting on Monday (ISO convention). The report index generator skips January and December and only lists weeks that have already ended.
+Week date ranges are calculated in `lib/weeks.ts` using `date-fns` and `@date-fns/tz` with timezone **`Australia/Sydney`** (Mon 00:00 – Sun 23:59:59). Metric query windows are converted to UTC ISO strings for Humio, Commercetools, and Datadog. The report index skips January and December and only lists weeks that have already ended in Sydney time.
 
 

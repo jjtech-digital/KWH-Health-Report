@@ -1,101 +1,101 @@
 "use client"
-import { Users, UserPlus, UserCheck, ShoppingBag, TrendingUp, PercentIcon, Info, X } from "lucide-react"
-import { healthData } from "@/lib/data"
+
 import { useState } from "react"
+import {
+  Users,
+  UserPlus,
+  UserCheck,
+  ShoppingBag,
+  TrendingUp,
+  PercentIcon,
+  Info,
+  X,
+} from "lucide-react"
+import type { Customers } from "@/lib/types/health-report"
 
-export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
-  const {
-    first_time_buyers = 0,
-    returning_customers = 0,
-    guest_checkouts = 0,
-    registered_user_orders = 0,
-    total_registered_users = 0,
-    conversion_rate = '—',
-  } = healthData?.find((data) => data?.week_number === weekNumber)?.customers || {}
+const modalContent = {
+  "New Customers": {
+    title: "New Customers",
+    description:
+      "This metric tracks first-time buyers who made their initial purchase during this specific week. These are customers who have never made a purchase on the platform before.",
+    importance:
+      "Understanding new customer acquisition helps measure the effectiveness of marketing campaigns and brand awareness efforts.",
+  },
+  "Returning Customers": {
+    title: "Returning Customers",
+    description:
+      "This shows existing customers who made repeat purchases during the week. These are valuable customers who have previously bought from the platform.",
+    importance:
+      "High returning customer rates indicate strong customer satisfaction and loyalty, which is crucial for sustainable business growth.",
+  },
+  "Guest Checkouts": {
+    title: "Guest Checkouts",
+    description:
+      "Orders completed by customers without creating an account or logging in. These purchases are made through the guest checkout process.",
+    importance:
+      "While convenient for customers, high guest checkout rates may indicate opportunities to encourage account creation for better customer retention.",
+  },
+  "Registered User Orders": {
+    title: "Registered User Orders",
+    description:
+      "Orders placed by customers who have accounts and were logged in during the purchase process.",
+    importance:
+      "Registered orders provide better customer data for personalization and marketing, and typically have higher lifetime value.",
+  },
+  "Total Registered Users": {
+    title: "Total Registered Users",
+    description: "New customer accounts created on the platform during this week.",
+    importance:
+      "Growing registered user base indicates platform adoption and provides opportunities for targeted marketing and customer retention.",
+  },
+  "Conversion Rate": {
+    title: "Conversion Rate",
+    description:
+      "The percentage of website visitors who complete a purchase during their visit. Calculated as (total orders / total views) × 100.",
+    importance:
+      "A key performance indicator that measures how effectively the website converts traffic into sales.",
+  },
+} as const
 
+export function CustomerOrders({ customers }: Readonly<{ customers: Customers }>) {
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
-
-  const modalContent = {
-    "New Customers": {
-      title: "New Customers",
-      description: "This metric tracks first-time buyers who made their initial purchase during this specific week. These are customers who have never made a purchase on the platform before.",
-      importance: "Understanding new customer acquisition helps measure the effectiveness of marketing campaigns and brand awareness efforts."
-    },
-    "Returning Customers": {
-      title: "Returning Customers", 
-      description: "This shows existing customers who made repeat purchases during the week. These are valuable customers who have previously bought from the platform.",
-      importance: "High returning customer rates indicate strong customer satisfaction and loyalty, which is crucial for sustainable business growth."
-    },
-    "Guest Checkouts": {
-      title: "Guest Checkouts",
-      description: "Orders completed by customers without creating an account or logging in. These purchases are made through the guest checkout process.",
-      importance: "While convenient for customers, high guest checkout rates may indicate opportunities to encourage account creation for better customer retention."
-    },
-    "Registered User Orders": {
-      title: "Registered User Orders",
-      description: "Orders placed by customers who have accounts and were logged in during the purchase process.",
-      importance: "Registered orders provide better customer data for personalization and marketing, and typically have higher lifetime value."
-    },
-    "Total Registered Users": {
-      title: "Total Registered Users",
-      description: "The cumulative count of all active user accounts on the platform as of this week.",
-      importance: "Growing registered user base indicates platform adoption and provides opportunities for targeted marketing and customer retention."
-    },
-    "Conversion Rate": {
-      title: "Conversion Rate",
-      description: "The percentage of website visitors who complete a purchase during their visit. Calculated as (total orders / total visitors) × 100.",
-      importance: "A key performance indicator that measures how effectively the website converts traffic into sales. Higher rates indicate better user experience and sales funnel optimization."
-    }
-  }
 
   const stats = [
     {
       label: "New Customers",
-      value: first_time_buyers.toLocaleString(),
+      value: customers.first_time_buyers.toLocaleString(),
       description: "First-time buyers this week",
       icon: UserPlus,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
     {
       label: "Returning Customers",
-      value: returning_customers.toLocaleString(),
+      value: customers.returning_customers.toLocaleString(),
       description: "Repeat purchases this week",
       icon: UserCheck,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
     {
       label: "Guest Checkouts",
-      value: guest_checkouts.toLocaleString(),
+      value: customers.guest_checkouts.toLocaleString(),
       description: "Orders without an account",
       icon: Users,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
     {
       label: "Registered User Orders",
-      value: registered_user_orders.toLocaleString(),
+      value: customers.registered_user_orders.toLocaleString(),
       description: "Orders by logged-in users",
       icon: ShoppingBag,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
     {
       label: "Total Registered Users",
-      value: total_registered_users.toLocaleString(),
-      description: "Active accounts on platform",
+      value: customers.total_registered_users.toLocaleString(),
+      description: "New accounts created this week",
       icon: TrendingUp,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
     {
       label: "Conversion Rate",
-      value: conversion_rate,
-      description: "Visitors to customers",
+      value: customers.conversion_rate,
+      description: "Orders per page view",
       icon: PercentIcon,
-      iconColor: "text-primary",
-      iconBg: "bg-primary/10",
     },
   ]
 
@@ -118,14 +118,13 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div
-                  className={`flex items-center justify-center w-9 h-9 rounded-lg ${stat.iconBg}`}
-                >
-                  <stat.icon className={`w-4 h-4 ${stat.iconColor}`} />
+                <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/10">
+                  <stat.icon className="w-4 h-4 text-primary" />
                 </div>
                 <span className="text-sm font-medium text-muted-foreground">{stat.label}</span>
               </div>
               <button
+                type="button"
                 onClick={() => setSelectedModal(stat.label)}
                 className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-muted transition-colors"
                 aria-label={`More info about ${stat.label}`}
@@ -138,30 +137,31 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
           </div>
         ))}
       </div>
-      
-      {/* Modal */}
+
       {selectedModal && modalContent[selectedModal as keyof typeof modalContent] && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedModal(null)}
+          role="presentation"
         >
-          <div 
+          <div
             className="bg-card border border-border rounded-lg max-w-md w-full p-6 relative"
-            onClick={(e) => e.stopPropagation()}
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
           >
             <button
+              type="button"
               onClick={() => setSelectedModal(null)}
               className="absolute top-4 right-4 w-8 h-8 rounded-full hover:bg-muted flex items-center justify-center transition-colors"
               aria-label="Close modal"
             >
               <X className="w-4 h-4 text-primary" />
             </button>
-            
             <div className="pr-8">
               <h3 className="text-lg font-semibold mb-3 text-card-foreground">
                 {modalContent[selectedModal as keyof typeof modalContent].title}
               </h3>
-              
               <div className="space-y-3">
                 <div>
                   <h4 className="text-sm font-medium text-card-foreground mb-1">Description</h4>
@@ -169,7 +169,6 @@ export function CustomerOrders({weekNumber}: Readonly<{weekNumber: number}>) {
                     {modalContent[selectedModal as keyof typeof modalContent].description}
                   </p>
                 </div>
-                
                 <div>
                   <h4 className="text-sm font-medium text-card-foreground mb-1">Why It Matters</h4>
                   <p className="text-sm text-muted-foreground">

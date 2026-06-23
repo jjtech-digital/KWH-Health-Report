@@ -1,5 +1,5 @@
 import { Eye, Globe } from "lucide-react"
-import { healthData } from "@/lib/data"
+import type { Traffic } from "@/lib/types/health-report"
 
 const BROWSER_COLORS: Record<string, string> = {
   Chrome: "bg-[#4285F4]",
@@ -10,8 +10,8 @@ const BROWSER_COLORS: Record<string, string> = {
   Other: "bg-muted-foreground",
 }
 
-export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
-  const { total_views, top_pages, browsers } = healthData?.find((data) => data?.week_number === weekNumber)?.traffic || { total_views: 0, top_pages: [], browsers: [] };
+export function TrafficOverview({ traffic }: Readonly<{ traffic: Traffic }>) {
+  const { total_views, top_pages, browsers } = traffic
   const maxViews = top_pages[0]?.views ?? 1
 
   return (
@@ -28,7 +28,6 @@ export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
         </div>
       </div>
 
-      {/* Browser Breakdown */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Globe className="w-4 h-4 text-primary" />
@@ -37,7 +36,6 @@ export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
           </h3>
         </div>
 
-        {/* Stacked bar */}
         <div className="flex h-3 w-full rounded-full overflow-hidden mb-3">
           {browsers.map((browser) => (
             <div
@@ -49,7 +47,6 @@ export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
           ))}
         </div>
 
-        {/* Legend */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
           {browsers.map((browser) => (
             <div key={browser.name} className="flex items-center justify-between gap-2">
@@ -72,13 +69,12 @@ export function TrafficOverview({weekNumber}: Readonly<{weekNumber: number}>) {
 
       <div className="h-px bg-border mb-6" />
 
-      {/* Top 5 Pages */}
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
           Top 5 Pages
         </h3>
         <div className="flex flex-col gap-3">
-          {top_pages
+          {[...top_pages]
             .sort((a, b) => b.views - a.views)
             .map((page) => {
               const percentage = (page.views / maxViews) * 100

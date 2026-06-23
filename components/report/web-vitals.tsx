@@ -1,5 +1,5 @@
 import { Monitor, TabletSmartphone } from "lucide-react"
-import { healthData } from "@/lib/data"
+import type { DeviceVitals, WebVitals } from "@/lib/types/health-report"
 
 function getVitalStatus(metric: string, value: string): { color: string; label: string; bg: string } {
   const num = Number.parseFloat(value)
@@ -23,32 +23,23 @@ function getVitalStatus(metric: string, value: string): { color: string; label: 
 }
 
 const metrics = [
-  {
-    key: "lcp",
-    label: "LCP",
-    description: "Largest Contentful Paint",
-    threshold: "< 2.5s",
-  },
-  {
-    key: "fid",
-    label: "FID",
-    description: "First Input Delay",
-    threshold: "< 100ms",
-  },
-  {
-    key: "cls",
-    label: "CLS",
-    description: "Cumulative Layout Shift",
-    threshold: "< 0.1",
-  },
-]
+  { key: "lcp", label: "LCP", description: "Largest Contentful Paint", threshold: "< 2.5s" },
+  { key: "fid", label: "FID", description: "First Input Delay", threshold: "< 100ms" },
+  { key: "cls", label: "CLS", description: "Cumulative Layout Shift", threshold: "< 0.1" },
+] as const
 
-function VitalsSection({ device, weekNumber }: { device: 'mobile' | 'desktop'; weekNumber: number }) {
+function VitalsSection({
+  device,
+  vitals,
+}: {
+  device: "mobile" | "desktop"
+  vitals: DeviceVitals
+}) {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-          {device === 'mobile' ? (
+          {device === "mobile" ? (
             <TabletSmartphone className="w-5 h-5 text-primary" />
           ) : (
             <Monitor className="w-5 h-5 text-primary" />
@@ -60,14 +51,8 @@ function VitalsSection({ device, weekNumber }: { device: 'mobile' | 'desktop'; w
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {metrics.map((metric) => {
-          const weekData = healthData?.find((data) => data?.week_number === weekNumber);
-          const vitals =
-            device === "mobile"
-              ? weekData?.web_vitals?.mobile
-              : weekData?.web_vitals?.desktop;
-          const fallback = { lcp: "0s", fid: "0ms", cls: "0" };
-          const value = (vitals?.[metric.key as keyof typeof fallback] as string) || fallback[metric.key as keyof typeof fallback];
-          const status = getVitalStatus(metric.key, value);
+          const value = vitals[metric.key]
+          const status = getVitalStatus(metric.key, value)
           return (
             <div
               key={metric.key}
@@ -97,11 +82,11 @@ function VitalsSection({ device, weekNumber }: { device: 'mobile' | 'desktop'; w
   )
 }
 
-export function WebVitals({ weekNumber }: Readonly<{ weekNumber: number }>) {
+export function WebVitals({ webVitals }: Readonly<{ webVitals: WebVitals }>) {
   return (
     <section className="flex flex-col gap-8">
-      <VitalsSection device="mobile" weekNumber={weekNumber} />
-      <VitalsSection device="desktop" weekNumber={weekNumber} />
+      <VitalsSection device="mobile" vitals={webVitals.mobile} />
+      <VitalsSection device="desktop" vitals={webVitals.desktop} />
     </section>
   )
 }
