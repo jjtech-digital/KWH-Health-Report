@@ -7,9 +7,10 @@ import type { MetricMode } from "./run-metric"
 
 const FIRST_TIME_BUYERS_MODE: MetricMode = "FIRST_TIME_BUYERS"
 
-const FAST_METRIC_SEQUENCE: Array<{
+const METRIC_SEQUENCE: Array<{
   mode: MetricMode
-  key: keyof typeof FAST_RESULT_KEYS
+  key: keyof typeof RESULT_KEYS
+  timeoutMs?: number
 }> = [
   { mode: "TOTAL_ORDERS", key: "total_orders" },
   { mode: "CART_TOTAL", key: "active_carts" },
@@ -17,9 +18,10 @@ const FAST_METRIC_SEQUENCE: Array<{
   { mode: "LOGGED_IN_ORDERS", key: "registered_user_orders" },
   { mode: "REPEATED_ORDERS", key: "returning_customers" },
   { mode: "TOTAL_CUSTOMERS", key: "total_registered_users" },
+  { mode: FIRST_TIME_BUYERS_MODE, key: "first_time_buyers", timeoutMs: CT_FTB_TIMEOUT_MS },
 ]
 
-const FAST_RESULT_KEYS = {
+const RESULT_KEYS = {
   total_orders: true,
   active_carts: true,
   guest_checkouts: true,
@@ -44,9 +46,9 @@ export async function fetchCommercetoolsMetrics(
   const failedModes: MetricMode[] = []
 
   await Promise.all(
-    FAST_METRIC_SEQUENCE.map(async ({ mode, key }) => {
+    METRIC_SEQUENCE.map(async ({ mode, key, timeoutMs }) => {
       try {
-        results[key] = await runMetricResilient(mode, startISO, endISO)
+        results[key] = await runMetricResilient(mode, startISO, endISO, { timeoutMs })
       } catch (error) {
         failedModes.push(mode)
         metricsLog.warn("commercetools", "Metric mode failed", {
@@ -56,22 +58,6 @@ export async function fetchCommercetoolsMetrics(
       }
     })
   )
-
-  try {
-    results.first_time_buyers = await runMetricResilient(
-      FIRST_TIME_BUYERS_MODE,
-      startISO,
-      endISO,
-      { timeoutMs: CT_FTB_TIMEOUT_MS }
-    )
-  } catch (error) {
-    failedModes.push(FIRST_TIME_BUYERS_MODE)
-    results.first_time_buyers = 0
-    metricsLog.warn("commercetools", "Metric mode failed", {
-      mode: FIRST_TIME_BUYERS_MODE,
-      error: error instanceof Error ? error.message : String(error),
-    })
-  }
 
   const metrics: CommercetoolsMetrics = {
     ecommerce: {

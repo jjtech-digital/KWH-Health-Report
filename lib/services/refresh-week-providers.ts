@@ -14,35 +14,18 @@ import {
   releaseRefreshLock,
   touchRefreshLock,
 } from "@/lib/cache/refresh-lock"
-import {
-  METRICS_CT_TIMEOUT_MS,
-  METRICS_INVOCATION_BUDGET_MS,
-} from "@/lib/config/metrics-timeouts"
-import { logPopulateCli } from "@/lib/logging/populate-logger"
+import { logPopulateCli, logProviderComplete } from "@/lib/logging/populate-logger"
 import { metricsLog } from "@/lib/logging/metrics-logger"
 import { fetchCommercetoolsMetrics } from "@/lib/metrics/commercetools"
 import { fetchDatadogMetrics } from "@/lib/metrics/datadog"
-import { fetchHumioMetricsCheckpointed, type HumioCheckpointProgress } from "@/lib/metrics/humio/checkpoint"
+import {
+  fetchHumioMetricsCheckpointed,
+  type HumioCheckpointProgress,
+} from "@/lib/metrics/humio/checkpoint"
 import type { RefreshSource } from "@/lib/types/cache"
 import { getWeekDateRangeISO, isWeekConcluded } from "@/lib/weeks"
 import { persistWeekSnapshot } from "@/lib/data/week-json-store"
 import { mergeProviderCaches } from "./merge-provider-caches"
-
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number, label: string): Promise<T> {
-  let timer: ReturnType<typeof setTimeout> | undefined
-
-  return Promise.race([
-    promise,
-    new Promise<T>((_, reject) => {
-      timer = setTimeout(
-        () => reject(new Error(`${label} timed out after ${timeoutMs}ms`)),
-        timeoutMs
-      )
-    }),
-  ]).finally(() => {
-    if (timer) clearTimeout(timer)
-  })
-}
 
 export interface RefreshWeekProvidersResult {
   cacheable: boolean
@@ -77,6 +60,17 @@ async function writeMergedWeekCache(
   }
 
   return merged
+}
+
+const EMPTY_CT_DATA = {
+  ecommerce: { total_orders: 0, active_carts: 0 },
+  customers: {
+    first_time_buyers: 0,
+    returning_customers: 0,
+    guest_checkouts: 0,
+    registered_user_orders: 0,
+    total_registered_users: 0,
+  },
 }
 
 export async function refreshWeekProviders(
@@ -120,124 +114,155 @@ export async function refreshWeekProviders(
 
   try {
     const existing = await getAllProviderCaches(year, week)
-    let fastProvidersRefreshed = false
 
     const needsDatadog = opts.force || !isProviderReady(existing.datadog)
     const needsCt = opts.force || !isProviderReady(existing.commercetools)
+    const needsHumio = opts.force || !isProviderReady(existing.humio)
 
-    if (needsDatadog || needsCt) {
-      const fastStarted = Date.now()
-      if (opts.onHumioProgress) {
-        logPopulateCli(`${year}-w${week} datadog+ct fetching…`)
-      }
-      const remainingForFast = Math.max(invocationDeadline - Date.now(), 5_000)
-
-      const [ddResult, ctResult] = await Promise.allSettled([
-        needsDatadog
-          ? fetchDatadogMetrics(startISO, endISO)
-          : Promise.resolve(existing.datadog!.data),
-        needsCt
-          ? withTimeout(
-              fetchCommercetoolsMetrics(startISO, endISO),
-              Math.min(METRICS_CT_TIMEOUT_MS, remainingForFast),
-              "commercetools"
-            )
-          : Promise.resolve(existing.commercetools!.data),
-      ])
-
-      const now = new Date().toISOString()
-
-      if (needsDatadog) {
-        if (ddResult.status === "fulfilled") {
-          await setProviderCache(year, week, "datadog", {
-            data: ddResult.value,
-            computedAt: now,
-            status: "ready",
-          })
-        } else if (!opts.quiet) {
-          metricsLog.error("assembler", "Datadog metrics failed", ddResult.reason)
-        }
-      }
-
-      if (needsCt) {
-        if (ctResult.status === "fulfilled") {
-          await setProviderCache(year, week, "commercetools", {
-            data: ctResult.value,
-            computedAt: now,
-            status: "ready",
-          })
-        } else {
-          await setProviderCache(year, week, "commercetools", {
-            data: existing.commercetools?.data ?? {
-              ecommerce: { total_orders: 0, active_carts: 0 },
-              customers: {
-                first_time_buyers: 0,
-                returning_customers: 0,
-                guest_checkouts: 0,
-                registered_user_orders: 0,
-                total_registered_users: 0,
-              },
-            },
-            computedAt: now,
-            status: "error",
-          })
-          if (!opts.quiet) {
-            metricsLog.error("assembler", "Commercetools metrics failed", ctResult.reason)
-          }
-        }
-      }
-
-      await writeMergedWeekCache(year, week, opts.source)
-      fastProvidersRefreshed = true
-
-      if (opts.onHumioProgress) {
-        logPopulateCli(
-          `${year}-w${week} datadog+ct ${Math.round((Date.now() - fastStarted) / 1000)}s`
-        )
-      }
-
-      if (!opts.quiet) {
-        metricsLog.info("assembler", "Fast providers refreshed", {
-          year,
-          week,
-          durationMs: Date.now() - fastStarted,
-        })
-      }
-    }
-
-    const humioExisting = (await getAllProviderCaches(year, week)).humio
-    if (!opts.force && isProviderReady(humioExisting)) {
+    if (!needsDatadog && !needsCt && !needsHumio) {
       const merged = await writeMergedWeekCache(year, week, opts.source)
       return {
         cacheable: merged.cacheable,
         providersFailed: merged.providersFailed,
         humioComplete: true,
-        fastProvidersRefreshed,
+        fastProvidersRefreshed: false,
         paused: false,
         durationMs: Date.now() - startedAt,
       }
     }
 
-    const checkpoint = await getHumioCheckpoint(year, week)
     if (opts.onHumioProgress) {
-      logPopulateCli(`${year}-w${week} humio starting`)
+      logPopulateCli(`${year}-w${week} all providers fetching…`)
     }
 
-    const humioResult = await fetchHumioMetricsCheckpointed(
-      startMs,
-      endMs,
-      checkpoint,
-      {
-        deadlineMs: invocationDeadline,
-        onSliceProgress: opts.onHumioProgress,
+    const checkpoint = needsHumio ? await getHumioCheckpoint(year, week) : null
+    const weekLabel = `${year}-w${week}`
+
+    const datadogTask = async (): Promise<"skipped" | "ready" | "error"> => {
+      if (!needsDatadog) return "skipped"
+
+      const taskStarted = Date.now()
+      try {
+        const data = await fetchDatadogMetrics(startISO, endISO)
+        await setProviderCache(year, week, "datadog", {
+          data,
+          computedAt: new Date().toISOString(),
+          status: "ready",
+        })
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "datadog", Date.now() - taskStarted)
+        }
+        return "ready"
+      } catch (error) {
+        if (!opts.quiet) {
+          metricsLog.error("assembler", "Datadog metrics failed", error)
+        }
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "datadog failed", Date.now() - taskStarted)
+        }
+        return "error"
       }
-    )
+    }
 
-    if (humioResult.paused && humioResult.checkpoint) {
-      await setHumioCheckpoint(year, week, humioResult.checkpoint)
-      await touchRefreshLock(year, week)
-      await writeMergedWeekCache(year, week, opts.source)
+    const commercetoolsTask = async (): Promise<"skipped" | "ready" | "error"> => {
+      if (!needsCt) return "skipped"
 
+      const taskStarted = Date.now()
+      try {
+        const data = await fetchCommercetoolsMetrics(startISO, endISO)
+        await setProviderCache(year, week, "commercetools", {
+          data,
+          computedAt: new Date().toISOString(),
+          status: "ready",
+        })
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "commercetools", Date.now() - taskStarted)
+        }
+        return "ready"
+      } catch (error) {
+        await setProviderCache(year, week, "commercetools", {
+          data: existing.commercetools?.data ?? EMPTY_CT_DATA,
+          computedAt: new Date().toISOString(),
+          status: "error",
+        })
+        if (!opts.quiet) {
+          metricsLog.error("assembler", "Commercetools metrics failed", error)
+        }
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "commercetools failed", Date.now() - taskStarted)
+        }
+        return "error"
+      }
+    }
+
+    const humioTask = async (): Promise<
+      "skipped" | "complete" | "paused" | "incomplete"
+    > => {
+      if (!needsHumio) return "skipped"
+
+      const taskStarted = Date.now()
+      const humioResult = await fetchHumioMetricsCheckpointed(
+        startMs,
+        endMs,
+        checkpoint,
+        {
+          deadlineMs: invocationDeadline,
+          onSliceProgress: opts.onHumioProgress,
+        }
+      )
+
+      if (humioResult.paused && humioResult.checkpoint) {
+        await setHumioCheckpoint(year, week, humioResult.checkpoint)
+        await touchRefreshLock(year, week)
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "humio paused", Date.now() - taskStarted)
+        }
+        return "paused"
+      }
+
+      if (humioResult.complete && humioResult.metrics) {
+        await setProviderCache(year, week, "humio", {
+          data: humioResult.metrics,
+          computedAt: new Date().toISOString(),
+          status: humioResult.metrics.reliabilityFailed ? "error" : "ready",
+        })
+        await deleteHumioCheckpoint(year, week)
+        if (opts.onHumioProgress) {
+          logProviderComplete(weekLabel, "humio", Date.now() - taskStarted)
+        }
+        return "complete"
+      }
+
+      await deleteHumioCheckpoint(year, week)
+      if (opts.onHumioProgress) {
+        logProviderComplete(weekLabel, "humio incomplete", Date.now() - taskStarted)
+      }
+      return "incomplete"
+    }
+
+    const providersStarted = Date.now()
+    const [datadogOutcome, ctOutcome, humioOutcome] = await Promise.all([
+      datadogTask(),
+      commercetoolsTask(),
+      humioTask(),
+    ])
+
+    await writeMergedWeekCache(year, week, opts.source)
+
+    const fastProvidersRefreshed = needsDatadog || needsCt
+
+    if (!opts.quiet && fastProvidersRefreshed) {
+      metricsLog.info("assembler", "Providers refreshed in parallel", {
+        year,
+        week,
+        datadog: datadogOutcome,
+        commercetools: ctOutcome,
+        humio: humioOutcome,
+        durationMs: Date.now() - providersStarted,
+      })
+    }
+
+    if (humioOutcome === "paused") {
       return {
         cacheable: false,
         providersFailed: ["humio"],
@@ -248,33 +273,14 @@ export async function refreshWeekProviders(
       }
     }
 
-    if (humioResult.complete && humioResult.metrics) {
-      const now = new Date().toISOString()
-      await setProviderCache(year, week, "humio", {
-        data: humioResult.metrics,
-        computedAt: now,
-        status: humioResult.metrics.reliabilityFailed ? "error" : "ready",
-      })
-      await deleteHumioCheckpoint(year, week)
-      const merged = await writeMergedWeekCache(year, week, opts.source)
-
-      return {
-        cacheable: merged.cacheable,
-        providersFailed: merged.providersFailed,
-        humioComplete: true,
-        fastProvidersRefreshed,
-        paused: false,
-        durationMs: Date.now() - startedAt,
-      }
-    }
-
-    await deleteHumioCheckpoint(year, week)
-    const merged = await writeMergedWeekCache(year, week, opts.source)
+    const merged = await getAllProviderCaches(year, week).then((providers) =>
+      mergeProviderCaches(year, week, providers)
+    )
 
     return {
       cacheable: merged.cacheable,
       providersFailed: merged.providersFailed,
-      humioComplete: false,
+      humioComplete: humioOutcome === "complete" || humioOutcome === "skipped",
       fastProvidersRefreshed,
       paused: false,
       durationMs: Date.now() - startedAt,

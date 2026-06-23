@@ -25,6 +25,14 @@ interface CtEnv {
 export interface ExecuteGraphQLOptions {
   /** Short label for aggregated error logs (e.g. FIRST_TIME_BUYERS_email). */
   label?: string
+  signal?: AbortSignal
+}
+
+function requestSignal(options?: ExecuteGraphQLOptions): AbortSignal {
+  if (options?.signal) {
+    return AbortSignal.any([options.signal, AbortSignal.timeout(CT_FETCH_TIMEOUT_MS)])
+  }
+  return AbortSignal.timeout(CT_FETCH_TIMEOUT_MS)
 }
 
 let tokenCache: { token: string; expiresAt: number } | null = null
@@ -108,7 +116,8 @@ async function executeGraphQLInner<T>(
   query: string,
   token: string,
   projectKey: string,
-  apiUrl: string
+  apiUrl: string,
+  signal: AbortSignal
 ): Promise<T> {
   let lastError: Error | null = null
 
@@ -121,7 +130,7 @@ async function executeGraphQLInner<T>(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ query }),
-        signal: AbortSignal.timeout(CT_FETCH_TIMEOUT_MS),
+        signal,
       })
 
       if (!res.ok) {
@@ -169,7 +178,8 @@ export async function executeGraphQL<T = unknown>(
   try {
     return await withCtQuerySlot(async () => {
       const token = await getAccessToken()
-      return executeGraphQLInner<T>(query, token, projectKey, apiUrl)
+      const signal = requestSignal(options)
+      return executeGraphQLInner<T>(query, token, projectKey, apiUrl, signal)
     })
   } catch (error) {
     metricsLog.warn("commercetools", "GraphQL request failed after retries", {

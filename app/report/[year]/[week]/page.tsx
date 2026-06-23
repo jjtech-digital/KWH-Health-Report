@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { format } from "date-fns"
 import { getWeekReport } from "@/lib/services/get-week-report"
-import { getWeekDateRange, parseWeekParam, parseYearParam } from "@/lib/weeks"
+import { getWeekDateRange, isCurrentReportWeek, parseWeekParam, parseYearParam } from "@/lib/weeks"
 import { ReportHeader } from "@/components/report/report-header"
 import { TrafficOverview } from "@/components/report/traffic-overview"
 import { SystemHealth } from "@/components/report/system-health"
@@ -55,6 +55,7 @@ export default async function ReportPage({ params }: ReportPageProps) {
         weekNum={weekNum}
         formattedRange={formattedRange}
         computedAt={report.computed_at}
+        showRefresh={isCurrentReportWeek(year, weekNum)}
       />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-8">

@@ -19,6 +19,7 @@ export interface WeekEntry {
   endDate: Date
   month: string
   monthIndex: number
+  isCurrentWeek?: boolean
 }
 
 export interface MonthGroup {
@@ -203,7 +204,9 @@ export function generateReportIndex(): YearGroup[] {
     const monthMap = new Map<string, WeekEntry[]>()
 
     for (let w = 1; w <= maxWeek; w++) {
-      if (!isWeekConcluded(y, w, now)) {
+      const concluded = isWeekConcluded(y, w, now)
+      const isCurrent = isCurrentReportWeek(y, w, now)
+      if (!concluded && !isCurrent) {
         continue
       }
 
@@ -227,6 +230,7 @@ export function generateReportIndex(): YearGroup[] {
         endDate: new Date(end.getTime()),
         month: monthName,
         monthIndex: monthIdx,
+        isCurrentWeek: isCurrent,
       }
 
       const key = `${monthIdx}-${monthName}`

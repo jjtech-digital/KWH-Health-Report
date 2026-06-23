@@ -284,9 +284,9 @@ Cron behaviour (all week logic uses **Australia/Sydney**):
 
 **Clear Redis cache:** `yarn cache:clear` (all keys) or `yarn cache:clear 2026 19` (one week). Clears `week`, `provider`, `humio-checkpoint`, `refresh-lock`, and `populate-cursor` keys.
 
-**Timeouts:** CT fast tick capped at `METRICS_CT_TIMEOUT_MS` (default 5 min). Humio uses Redis checkpoints (~270s per HTTP/cron tick, 20 min total per week). Pages use `maxDuration = 60` and never block on full assembly.
+**Timeouts:** Datadog, Commercetools, and Humio start **in parallel** during populate/refresh. `METRICS_CT_FTB_TIMEOUT_MS` (default 10 min) caps FIRST_TIME_BUYERS; other CT modes use per-request retries. Humio uses Redis checkpoints (~270s per HTTP/cron tick, 20 min total per week). Pages use `maxDuration = 60` and never block on full assembly.
 
-**Commercetools concurrency:** First-time-buyer lookups run at low concurrency (`CT_EMAIL_BATCH_SIZE=3`) with retries to avoid connect-timeout log floods after a cache clear. Partial CT failures keep other metrics (e.g. total orders) and mark the report non-cacheable.
+**Commercetools concurrency:** Env-backed batching — `CT_EMAIL_BATCH_SIZE` (default 5), `CT_MAX_CONCURRENT_JOBS` (default 4). Weeks with more than `CT_FTB_FULL_WEEK_THRESHOLD` unique emails (default 400) use 4-hour interval splitting for first-time buyers. Partial CT failures keep other metrics (e.g. total orders) and mark the report non-cacheable.
 
 ```ts
 interface HealthReportWeek {

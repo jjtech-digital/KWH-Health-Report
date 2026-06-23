@@ -24,32 +24,42 @@ export type MetricMode =
 export async function runMetric(
   mode: MetricMode,
   startDate: string,
-  endDate: string
+  endDate: string,
+  options?: { signal?: AbortSignal }
 ): Promise<number> {
+  const signal = options?.signal
+
   switch (mode) {
     case "CART_TOTAL":
       return resolveCountWithBreakdown(fetchCartTotal, startDate, endDate, {
         intervalHours: CT_INTERVAL_HOURS_CART,
         label: "CART_TOTAL",
+        signal,
       })
     case "TOTAL_ORDERS":
       return resolveCountWithBreakdown(fetchOrderTotal, startDate, endDate, {
         label: "TOTAL_ORDERS",
+        signal,
       })
     case "LOGGED_IN_ORDERS":
       return resolveCountWithBreakdown(fetchLoggedInOrderTotal, startDate, endDate, {
         label: "LOGGED_IN_ORDERS",
+        signal,
       })
     case "ANONYMOUS_ORDERS":
       return resolveCountWithBreakdown(fetchAnonymousOrderTotal, startDate, endDate, {
         label: "ANONYMOUS_ORDERS",
+        signal,
       })
     case "TOTAL_CUSTOMERS":
       return resolveCountWithBreakdown(fetchCustomersCreatedTotal, startDate, endDate, {
         label: "TOTAL_CUSTOMERS",
+        signal,
       })
     case "FIRST_TIME_BUYERS":
-      return countFirstTimeBuyersForWeek(startDate, endDate, CT_INTERVAL_HOURS_FTB)
+      return countFirstTimeBuyersForWeek(startDate, endDate, CT_INTERVAL_HOURS_FTB, {
+        signal,
+      })
     case "REPEATED_ORDERS":
       return fetchRepeatedCustOrderTotal(startDate, endDate)
     default: {

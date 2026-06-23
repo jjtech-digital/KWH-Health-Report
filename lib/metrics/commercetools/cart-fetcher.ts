@@ -172,7 +172,10 @@ export async function fetchFirstTimeBuyerEmails(
   return [...emails]
 }
 
-export async function fetchLifetimeOrderCountForEmail(email: string): Promise<number> {
+export async function fetchLifetimeOrderCountForEmail(
+  email: string,
+  signal?: AbortSignal
+): Promise<number> {
   const escaped = email.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
   const query = `
     query {
@@ -185,6 +188,7 @@ export async function fetchLifetimeOrderCountForEmail(email: string): Promise<nu
   `
   const res = await executeGraphQL<GraphQLTotalResult>(query, {
     label: "FIRST_TIME_BUYERS_email",
+    signal,
   })
   return res?.data?.orders?.total ?? 0
 }

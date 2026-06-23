@@ -1,7 +1,7 @@
 import "server-only"
 
 import { metricsLog } from "@/lib/logging/metrics-logger"
-import { METRICS_CT_TIMEOUT_MS } from "@/lib/config/metrics-timeouts"
+import { METRICS_CT_FTB_TIMEOUT_MS } from "@/lib/config/commercetools"
 import {
   CT_METRIC_MAX_RETRIES,
   CT_METRIC_RETRY_BASE_MS,
@@ -19,7 +19,7 @@ function metricRetryDelayMs(attempt: number): number {
 
 function shouldRetryMetric(error: unknown, attempt: number): boolean {
   if (isCtTimeoutError(error)) {
-    return attempt < 1
+    return false
   }
   return isTransientCtError(error) && attempt < CT_METRIC_MAX_RETRIES
 }
@@ -30,16 +30,17 @@ async function runMetricWithTimeout(
   endISO: string,
   timeoutMs: number
 ): Promise<number> {
+  const controller = new AbortController()
   let timer: ReturnType<typeof setTimeout> | undefined
 
   try {
     return await Promise.race([
-      runMetric(mode, startISO, endISO),
+      runMetric(mode, startISO, endISO, { signal: controller.signal }),
       new Promise<number>((_, reject) => {
-        timer = setTimeout(
-          () => reject(new Error(`${mode} timed out after ${timeoutMs}ms`)),
-          timeoutMs
-        )
+        timer = setTimeout(() => {
+          controller.abort()
+          reject(new Error(`${mode} timed out after ${timeoutMs}ms`))
+        }, timeoutMs)
       }),
     ])
   } finally {
@@ -80,5 +81,5 @@ export async function runMetricResilient(
   }
 }
 
-/** FIRST_TIME_BUYERS uses the full CT budget — slowest mode. */
-export const CT_FTB_TIMEOUT_MS = METRICS_CT_TIMEOUT_MS
+/** FIRST_TIME_BUYERS uses a dedicated longer budget — slowest mode. */
+export const CT_FTB_TIMEOUT_MS = METRICS_CT_FTB_TIMEOUT_MS

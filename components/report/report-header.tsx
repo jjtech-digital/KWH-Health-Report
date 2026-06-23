@@ -9,6 +9,7 @@ interface ReportHeaderProps {
   weekNum: number
   formattedRange: string
   computedAt?: string
+  showRefresh?: boolean
 }
 
 export function ReportHeader({
@@ -16,6 +17,7 @@ export function ReportHeader({
   weekNum,
   formattedRange,
   computedAt,
+  showRefresh = false,
 }: Readonly<ReportHeaderProps>) {
   return (
     <header className="bg-card border-b border-border">
@@ -45,7 +47,7 @@ export function ReportHeader({
             <span className="hidden md:inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
               kitchenwarehouse.com.au
             </span>
-            <ReportRefreshButton year={year} week={weekNum} />
+            {showRefresh ? <ReportRefreshButton year={year} week={weekNum} /> : null}
           </div>
         </div>
         <div className="sm:hidden mt-2">

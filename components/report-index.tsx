@@ -16,16 +16,20 @@ function WeekCard({
   week,
   displayWeek,
   label,
+  isCurrentWeek,
 }: {
   year: number
   week: number
   displayWeek: number
   label: string
+  isCurrentWeek?: boolean
 }) {
   return (
     <Link
       href={`/report/${year}/w${week}`}
-      className="group flex items-center justify-between gap-3 rounded-lg border border-border bg-card p-3.5 transition-all hover:border-primary/30 hover:shadow-sm"
+      className={`group flex items-center justify-between gap-3 rounded-lg border bg-card p-3.5 transition-all hover:border-primary/30 hover:shadow-sm ${
+        isCurrentWeek ? "border-primary/40" : "border-border"
+      }`}
     >
       <div className="flex items-center gap-3 min-w-0">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary font-semibold text-sm">
@@ -73,7 +77,11 @@ function MonthSection({ monthGroup, year, defaultOpen }: { monthGroup: MonthGrou
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {monthGroup.weeks
               .slice()
-              .sort((a, b) => b.monthWeek - a.monthWeek)
+              .sort((a, b) => {
+                if (a.isCurrentWeek && !b.isCurrentWeek) return -1
+                if (!a.isCurrentWeek && b.isCurrentWeek) return 1
+                return b.monthWeek - a.monthWeek
+              })
               .map((w) => (
                 <WeekCard
                   key={w.week}
@@ -81,6 +89,7 @@ function MonthSection({ monthGroup, year, defaultOpen }: { monthGroup: MonthGrou
                   week={w.week}
                   displayWeek={w.monthWeek}
                   label={w.label}
+                  isCurrentWeek={w.isCurrentWeek}
                 />
               ))}
           </div>

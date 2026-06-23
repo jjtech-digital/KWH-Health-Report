@@ -35,6 +35,11 @@ export function logPopulateCli(message: string): void {
   if (cliMode) cliLine(message)
 }
 
+export function logProviderComplete(week: string, provider: string, ms: number): void {
+  if (!cliMode) return
+  cliLine(`${week} ${provider} ${formatDuration(ms)}`)
+}
+
 export function logPopulateStart(weekCount: number, fromIndex: number): void {
   if (cliMode) {
     cliLine(

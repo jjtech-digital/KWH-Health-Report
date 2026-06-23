@@ -67,10 +67,11 @@ export async function resolveCountWithBreakdown(
   metricFn: (from: string, to: string) => Promise<number>,
   from: string,
   to: string,
-  options?: { intervalHours?: number; label?: string }
+  options?: { intervalHours?: number; label?: string; signal?: AbortSignal }
 ): Promise<number> {
   const intervalHours = options?.intervalHours ?? CT_INTERVAL_HOURS_ORDERS
   const label = options?.label
+  const signal = options?.signal
 
   const fullRangeTotal = await queryRangeTotal(metricFn, from, to)
 
@@ -83,7 +84,7 @@ export async function resolveCountWithBreakdown(
   const intervalTotals = await runInBatches(
     intervals,
     async (interval: DateRange) => resolveLeafTotal(metricFn, interval.from, interval.to),
-    { label }
+    { label, signal }
   )
 
   return intervalTotals.reduce((sum, value) => sum + value, 0)
