@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/populate-cache",
+      "schedule": "*/30 * * * *"
+    }
+  ]
+}
