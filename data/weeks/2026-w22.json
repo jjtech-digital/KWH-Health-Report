@@ -1,0 +1,119 @@
+{
+  "week_number": 22,
+  "year": 2026,
+  "computed_at": "2026-07-05T13:59:59.999Z",
+  "traffic": {
+    "total_views": 702740,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 100092
+      },
+      {
+        "path": "/search",
+        "views": 46298
+      },
+      {
+        "path": "/offers",
+        "views": 4896
+      },
+      {
+        "path": "/campaigns/soup-season",
+        "views": 4271
+      },
+      {
+        "path": "/brands/kitchen-pro/kitchen-pro-airlock",
+        "views": 4247
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 244273,
+        "percentage": 44.92
+      },
+      {
+        "name": "Safari",
+        "views": 178486,
+        "percentage": 32.82
+      },
+      {
+        "name": "Edge",
+        "views": 16490,
+        "percentage": 3.03
+      },
+      {
+        "name": "Firefox",
+        "views": 6296,
+        "percentage": 1.16
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 14110,
+        "percentage": 2.59
+      },
+      {
+        "name": "Other",
+        "views": 84105,
+        "percentage": 15.47
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 433,
+    "error_rate": "0.061%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+        "failures": 173,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 114,
+        "status": 503
+      },
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 64,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 58,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/reviews/relatedReviews",
+        "failures": 24,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 10000,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 39,
+    "active_carts": 45258
+  },
+  "customers": {
+    "first_time_buyers": 456,
+    "returning_customers": 251,
+    "guest_checkouts": 1,
+    "registered_user_orders": 10000,
+    "total_registered_users": 1729,
+    "conversion_rate": "2.10%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.5s",
+      "fid": "198ms",
+      "cls": "0.47"
+    },
+    "mobile": {
+      "lcp": "3.8s",
+      "fid": "268ms",
+      "cls": "0.14"
+    }
+  }
+}
