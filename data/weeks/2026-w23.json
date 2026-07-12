@@ -1,0 +1,119 @@
+{
+  "week_number": 23,
+  "year": 2026,
+  "computed_at": "2026-07-12T13:59:59.999Z",
+  "traffic": {
+    "total_views": 670392,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 123216
+      },
+      {
+        "path": "/search",
+        "views": 36006
+      },
+      {
+        "path": "/product/wolstead-swift-glass-4-in-1-air-fryer-matte-black",
+        "views": 5126
+      },
+      {
+        "path": "/blog/recipes/sticky-date-pudding-with-mascarpone-cream",
+        "views": 4261
+      },
+      {
+        "path": "/product/wolstead-perfection-slow-cooker-6l",
+        "views": 3715
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 256083,
+        "percentage": 48.06
+      },
+      {
+        "name": "Safari",
+        "views": 168510,
+        "percentage": 31.63
+      },
+      {
+        "name": "Edge",
+        "views": 13124,
+        "percentage": 2.46
+      },
+      {
+        "name": "Firefox",
+        "views": 5867,
+        "percentage": 1.1
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 13811,
+        "percentage": 2.59
+      },
+      {
+        "name": "Other",
+        "views": 75441,
+        "percentage": 14.16
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 351,
+    "error_rate": "0.0523%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+        "failures": 146,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 69,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/reviews/relatedReviews",
+        "failures": 54,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/cart/AddToCart",
+        "failures": 51,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 31,
+        "status": 503
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 8030,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 28,
+    "active_carts": 54729
+  },
+  "customers": {
+    "first_time_buyers": 453,
+    "returning_customers": 196,
+    "guest_checkouts": 3,
+    "registered_user_orders": 8027,
+    "total_registered_users": 1344,
+    "conversion_rate": "1.56%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.4s",
+      "fid": "195ms",
+      "cls": "0.49"
+    },
+    "mobile": {
+      "lcp": "3.6s",
+      "fid": "263ms",
+      "cls": "0.14"
+    }
+  }
+}
