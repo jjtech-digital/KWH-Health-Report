@@ -1,0 +1,119 @@
+{
+  "week_number": 25,
+  "year": 2026,
+  "computed_at": "2026-07-26T13:59:59.999Z",
+  "traffic": {
+    "total_views": 707231,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 167888
+      },
+      {
+        "path": "/search",
+        "views": 20143
+      },
+      {
+        "path": "/product/kitchen-pro-airlock-glass-container-set-10pc",
+        "views": 4036
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 3350
+      },
+      {
+        "path": "/product/wolstead-perfection-slow-cooker-6l",
+        "views": 2893
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 292063,
+        "percentage": 53.01
+      },
+      {
+        "name": "Safari",
+        "views": 164211,
+        "percentage": 29.8
+      },
+      {
+        "name": "Edge",
+        "views": 12962,
+        "percentage": 2.35
+      },
+      {
+        "name": "Firefox",
+        "views": 5699,
+        "percentage": 1.03
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 12477,
+        "percentage": 2.26
+      },
+      {
+        "name": "Other",
+        "views": 63558,
+        "percentage": 11.54
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 213,
+    "error_rate": "0.0301%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 74,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 74,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/account/updatepreferredstore",
+        "failures": 36,
+        "status": 409
+      },
+      {
+        "path": "/frontastic/action/wishlist/getWishlist",
+        "failures": 17,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 12,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 9450,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 16,
+    "active_carts": 44288
+  },
+  "customers": {
+    "first_time_buyers": 463,
+    "returning_customers": 235,
+    "guest_checkouts": 0,
+    "registered_user_orders": 9449,
+    "total_registered_users": 2352,
+    "conversion_rate": "1.72%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.4s",
+      "fid": "189ms",
+      "cls": "0.48"
+    },
+    "mobile": {
+      "lcp": "3.7s",
+      "fid": "250ms",
+      "cls": "0.5"
+    }
+  }
+}
