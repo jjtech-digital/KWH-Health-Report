@@ -1,0 +1,119 @@
+{
+  "week_number": 26,
+  "year": 2026,
+  "computed_at": "2026-08-02T13:59:59.999Z",
+  "traffic": {
+    "total_views": 730678,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 174357
+      },
+      {
+        "path": "/search",
+        "views": 20999
+      },
+      {
+        "path": "/clearance-specials",
+        "views": 10594
+      },
+      {
+        "path": "/product/wolstead-bonn-end-grain-chopping-board-35x50x6cm",
+        "views": 7768
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 3588
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 298961,
+        "percentage": 53.15
+      },
+      {
+        "name": "Safari",
+        "views": 164647,
+        "percentage": 29.27
+      },
+      {
+        "name": "Edge",
+        "views": 13217,
+        "percentage": 2.35
+      },
+      {
+        "name": "Firefox",
+        "views": 5832,
+        "percentage": 1.04
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 12523,
+        "percentage": 2.23
+      },
+      {
+        "name": "Other",
+        "views": 67264,
+        "percentage": 11.96
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 377,
+    "error_rate": "0.0533%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 198,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 93,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 38,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/reviews/relatedReviews",
+        "failures": 34,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/checkout/details",
+        "failures": 14,
+        "status": 503
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 9996,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 14,
+    "active_carts": 114717
+  },
+  "customers": {
+    "first_time_buyers": 471,
+    "returning_customers": 243,
+    "guest_checkouts": 0,
+    "registered_user_orders": 9996,
+    "total_registered_users": 10000,
+    "conversion_rate": "1.72%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.8s",
+      "fid": "186ms",
+      "cls": "0.14"
+    },
+    "mobile": {
+      "lcp": "4.1s",
+      "fid": "251ms",
+      "cls": "0.03"
+    }
+  }
+}
