@@ -1,0 +1,119 @@
+{
+  "week_number": 28,
+  "year": 2026,
+  "computed_at": "2026-08-16T13:59:59.999Z",
+  "traffic": {
+    "total_views": 791408,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 165917
+      },
+      {
+        "path": "/search",
+        "views": 40387
+      },
+      {
+        "path": "/clearance-specials",
+        "views": 6862
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 2767
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 2748
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 331224,
+        "percentage": 54.3
+      },
+      {
+        "name": "Safari",
+        "views": 174906,
+        "percentage": 28.67
+      },
+      {
+        "name": "Edge",
+        "views": 16994,
+        "percentage": 2.79
+      },
+      {
+        "name": "Firefox",
+        "views": 10415,
+        "percentage": 1.71
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 13447,
+        "percentage": 2.2
+      },
+      {
+        "name": "Other",
+        "views": 63001,
+        "percentage": 10.33
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 221,
+    "error_rate": "0.0311%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 114,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/checkout/details",
+        "failures": 45,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 40,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/wishlist/addItemsToWishlist",
+        "failures": 18,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 4,
+        "status": 503
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 10000,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 24,
+    "active_carts": 47678
+  },
+  "customers": {
+    "first_time_buyers": 470,
+    "returning_customers": 222,
+    "guest_checkouts": 0,
+    "registered_user_orders": 10000,
+    "total_registered_users": 10000,
+    "conversion_rate": "1.58%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.8s",
+      "fid": "190ms",
+      "cls": "0.09"
+    },
+    "mobile": {
+      "lcp": "4.1s",
+      "fid": "254ms",
+      "cls": "0.02"
+    }
+  }
+}
