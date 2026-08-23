@@ -135,6 +135,16 @@
       "year": 2026,
       "week": 27,
       "file": "2026-w27.json"
+    },
+    {
+      "year": 2026,
+      "week": 28,
+      "file": "2026-w28.json"
+    },
+    {
+      "year": 2026,
+      "week": 29,
+      "file": "2026-w29.json"
     }
   ],
   "by_year": {

@@ -1,0 +1,119 @@
+{
+  "week_number": 29,
+  "year": 2026,
+  "computed_at": "2026-08-23T13:59:59.999Z",
+  "traffic": {
+    "total_views": 724825,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 174395
+      },
+      {
+        "path": "/search",
+        "views": 18585
+      },
+      {
+        "path": "/blog/recipes/sunday-beef-rib-roast-with-mustard-crust-and-yorkshire-puddings",
+        "views": 2346
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 2320
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 2267
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 299827,
+        "percentage": 55.27
+      },
+      {
+        "name": "Safari",
+        "views": 158593,
+        "percentage": 29.24
+      },
+      {
+        "name": "Edge",
+        "views": 13271,
+        "percentage": 2.45
+      },
+      {
+        "name": "Firefox",
+        "views": 5854,
+        "percentage": 1.08
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 11815,
+        "percentage": 2.18
+      },
+      {
+        "name": "Other",
+        "views": 53084,
+        "percentage": 9.79
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 324,
+    "error_rate": "0.0447%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 104,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/checkout/getcartsessionid",
+        "failures": 68,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 65,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 54,
+        "status": 401
+      },
+      {
+        "path": "/frontastic/action/checkout/details",
+        "failures": 33,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 8743,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 19,
+    "active_carts": 37731
+  },
+  "customers": {
+    "first_time_buyers": 445,
+    "returning_customers": 207,
+    "guest_checkouts": 0,
+    "registered_user_orders": 8743,
+    "total_registered_users": 8643,
+    "conversion_rate": "1.71%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.8s",
+      "fid": "191ms",
+      "cls": "0.08"
+    },
+    "mobile": {
+      "lcp": "4.2s",
+      "fid": "255ms",
+      "cls": "0.02"
+    }
+  }
+}
