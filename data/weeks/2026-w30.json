@@ -1,0 +1,119 @@
+{
+  "week_number": 30,
+  "year": 2026,
+  "computed_at": "2026-08-30T13:59:59.999Z",
+  "traffic": {
+    "total_views": 702955,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 173244
+      },
+      {
+        "path": "/search",
+        "views": 17711
+      },
+      {
+        "path": "/brands/le-creuset",
+        "views": 3399
+      },
+      {
+        "path": "/blog/recipes/red-wine-braised-beef-with-shallots",
+        "views": 3003
+      },
+      {
+        "path": "/product/wolstead-14-in-1-cookmaster-multi-cooker-air-fryer-8l",
+        "views": 2551
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 297060,
+        "percentage": 55.76
+      },
+      {
+        "name": "Safari",
+        "views": 153146,
+        "percentage": 28.75
+      },
+      {
+        "name": "Edge",
+        "views": 12521,
+        "percentage": 2.35
+      },
+      {
+        "name": "Firefox",
+        "views": 6264,
+        "percentage": 1.18
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 11937,
+        "percentage": 2.24
+      },
+      {
+        "name": "Other",
+        "views": 51793,
+        "percentage": 9.72
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 255,
+    "error_rate": "0.0363%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 86,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/checkout/getAddressByQuery",
+        "failures": 56,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/checkout/getcartsessionid",
+        "failures": 56,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 30,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 27,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 9097,
+    "payment_failures_declined": 1,
+    "payment_failures_approved": 17,
+    "active_carts": 39280
+  },
+  "customers": {
+    "first_time_buyers": 474,
+    "returning_customers": 174,
+    "guest_checkouts": 0,
+    "registered_user_orders": 9097,
+    "total_registered_users": 8545,
+    "conversion_rate": "1.64%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.8s",
+      "fid": "194ms",
+      "cls": "0.08"
+    },
+    "mobile": {
+      "lcp": "4.2s",
+      "fid": "258ms",
+      "cls": "0.01"
+    }
+  }
+}
