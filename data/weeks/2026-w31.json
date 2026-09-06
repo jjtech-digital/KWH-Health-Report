@@ -1,0 +1,119 @@
+{
+  "week_number": 31,
+  "year": 2026,
+  "computed_at": "2026-09-06T13:59:59.999Z",
+  "traffic": {
+    "total_views": 650807,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 162461
+      },
+      {
+        "path": "/search",
+        "views": 14968
+      },
+      {
+        "path": "/brands/kitchen-pro/kitchen-pro-airlock",
+        "views": 2717
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 2703
+      },
+      {
+        "path": "/fathers-day",
+        "views": 2042
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 265093,
+        "percentage": 54.86
+      },
+      {
+        "name": "Safari",
+        "views": 139513,
+        "percentage": 28.87
+      },
+      {
+        "name": "Edge",
+        "views": 12353,
+        "percentage": 2.56
+      },
+      {
+        "name": "Firefox",
+        "views": 5199,
+        "percentage": 1.08
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 10664,
+        "percentage": 2.21
+      },
+      {
+        "name": "Other",
+        "views": 50434,
+        "percentage": 10.44
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 338,
+    "error_rate": "0.0519%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+        "failures": 180,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 53,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 47,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/reviews/relatedReviews",
+        "failures": 32,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/checkout/getAddressByQuery",
+        "failures": 26,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 8067,
+    "payment_failures_declined": 2,
+    "payment_failures_approved": 18,
+    "active_carts": 36010
+  },
+  "customers": {
+    "first_time_buyers": 412,
+    "returning_customers": 176,
+    "guest_checkouts": 0,
+    "registered_user_orders": 8067,
+    "total_registered_users": 9106,
+    "conversion_rate": "1.75%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.8s",
+      "fid": "195ms",
+      "cls": "0.08"
+    },
+    "mobile": {
+      "lcp": "4.2s",
+      "fid": "259ms",
+      "cls": "0.02"
+    }
+  }
+}
