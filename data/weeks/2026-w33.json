@@ -1,0 +1,119 @@
+{
+  "week_number": 33,
+  "year": 2026,
+  "computed_at": "2026-09-20T13:59:59.999Z",
+  "traffic": {
+    "total_views": 464326,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 70242
+      },
+      {
+        "path": "/search",
+        "views": 6154
+      },
+      {
+        "path": "/clearance-specials",
+        "views": 5677
+      },
+      {
+        "path": "/checkout",
+        "views": 2635
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 1926
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 144822,
+        "percentage": 42.03
+      },
+      {
+        "name": "Safari",
+        "views": 139447,
+        "percentage": 40.47
+      },
+      {
+        "name": "Edge",
+        "views": 10717,
+        "percentage": 3.11
+      },
+      {
+        "name": "Firefox",
+        "views": 4935,
+        "percentage": 1.43
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 9465,
+        "percentage": 2.75
+      },
+      {
+        "name": "Other",
+        "views": 35175,
+        "percentage": 10.21
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 318,
+    "error_rate": "0.0685%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/product/breadcrumbs",
+        "failures": 184,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 48,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/storelocator/stock-by-sku",
+        "failures": 39,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/quickSearch",
+        "failures": 25,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/instoreOrders/list",
+        "failures": 22,
+        "status": 499
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 8162,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 17,
+    "active_carts": 36839
+  },
+  "customers": {
+    "first_time_buyers": 438,
+    "returning_customers": 190,
+    "guest_checkouts": 0,
+    "registered_user_orders": 8162,
+    "total_registered_users": 8376,
+    "conversion_rate": "2.30%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "4.3s",
+      "fid": "195ms",
+      "cls": "0.08"
+    },
+    "mobile": {
+      "lcp": "4.8s",
+      "fid": "263ms",
+      "cls": "0.06"
+    }
+  }
+}
