@@ -1,0 +1,119 @@
+{
+  "week_number": 34,
+  "year": 2026,
+  "computed_at": "2026-09-27T13:59:59.999Z",
+  "traffic": {
+    "total_views": 490714,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 59360
+      },
+      {
+        "path": "/search",
+        "views": 7442
+      },
+      {
+        "path": "/brands/fellow",
+        "views": 2951
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 2941
+      },
+      {
+        "path": "/blog/recipes/crispy-gnocchi-with-spring-greens-and-mozzarella",
+        "views": 2831
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 152164,
+        "percentage": 41.02
+      },
+      {
+        "name": "Safari",
+        "views": 152737,
+        "percentage": 41.17
+      },
+      {
+        "name": "Edge",
+        "views": 10773,
+        "percentage": 2.9
+      },
+      {
+        "name": "Firefox",
+        "views": 5220,
+        "percentage": 1.41
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 10216,
+        "percentage": 2.75
+      },
+      {
+        "name": "Other",
+        "views": 39836,
+        "percentage": 10.74
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 400,
+    "error_rate": "0.0815%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/cart/mergeCart",
+        "failures": 87,
+        "status": 401
+      },
+      {
+        "path": "/frontastic/action/netsuite/magazineSignUp",
+        "failures": 84,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/wishlist/addItemsToWishlist",
+        "failures": 83,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 80,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/checkout/getAddressByQuery",
+        "failures": 66,
+        "status": 404
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 9960,
+    "payment_failures_declined": 0,
+    "payment_failures_approved": 26,
+    "active_carts": 43835
+  },
+  "customers": {
+    "first_time_buyers": 511,
+    "returning_customers": 243,
+    "guest_checkouts": 0,
+    "registered_user_orders": 9960,
+    "total_registered_users": 10000,
+    "conversion_rate": "2.22%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "4.6s",
+      "fid": "191ms",
+      "cls": "0.07"
+    },
+    "mobile": {
+      "lcp": "5.0s",
+      "fid": "262ms",
+      "cls": "0.07"
+    }
+  }
+}
