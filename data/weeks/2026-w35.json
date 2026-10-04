@@ -1,0 +1,119 @@
+{
+  "week_number": 35,
+  "year": 2026,
+  "computed_at": "2026-10-04T13:59:59.999Z",
+  "traffic": {
+    "total_views": 601802,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 78121
+      },
+      {
+        "path": "/search",
+        "views": 8428
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 3191
+      },
+      {
+        "path": "/checkout",
+        "views": 2959
+      },
+      {
+        "path": "/brands/le-creuset",
+        "views": 2795
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 209757,
+        "percentage": 46.5
+      },
+      {
+        "name": "Safari",
+        "views": 164611,
+        "percentage": 36.49
+      },
+      {
+        "name": "Edge",
+        "views": 13269,
+        "percentage": 2.94
+      },
+      {
+        "name": "Firefox",
+        "views": 6402,
+        "percentage": 1.42
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 12391,
+        "percentage": 2.75
+      },
+      {
+        "name": "Other",
+        "views": 44679,
+        "percentage": 9.9
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 332,
+    "error_rate": "0.0552%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 114,
+        "status": 499
+      },
+      {
+        "path": "/frontastic/action/product/breadcrumbs",
+        "failures": 84,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 82,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 28,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/ct-auth/getAccessTokenByRefreshToken",
+        "failures": 24,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 8970,
+    "payment_failures_declined": 3,
+    "payment_failures_approved": 16,
+    "active_carts": 42110
+  },
+  "customers": {
+    "first_time_buyers": 454,
+    "returning_customers": 192,
+    "guest_checkouts": 0,
+    "registered_user_orders": 8970,
+    "total_registered_users": 9211,
+    "conversion_rate": "2.22%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "4.8s",
+      "fid": "184ms",
+      "cls": "0.07"
+    },
+    "mobile": {
+      "lcp": "5.3s",
+      "fid": "257ms",
+      "cls": "0.06"
+    }
+  }
+}
