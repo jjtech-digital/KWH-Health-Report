@@ -1,0 +1,119 @@
+{
+  "week_number": 36,
+  "year": 2026,
+  "computed_at": "2026-10-11T12:59:59.999Z",
+  "traffic": {
+    "total_views": 605217,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 72411
+      },
+      {
+        "path": "/search",
+        "views": 8326
+      },
+      {
+        "path": "/blog/recipes/lemon-and-passionfruit-meringue-slab-pie",
+        "views": 3457
+      },
+      {
+        "path": "/checkout",
+        "views": 3142
+      },
+      {
+        "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
+        "views": 2881
+      }
+    ],
+    "browsers": [
+      {
+        "name": "iOS",
+        "views": 206973,
+        "percentage": 46.6
+      },
+      {
+        "name": "Mac OS X",
+        "views": 93205,
+        "percentage": 20.99
+      },
+      {
+        "name": "Android",
+        "views": 79502,
+        "percentage": 17.9
+      },
+      {
+        "name": "Windows",
+        "views": 46754,
+        "percentage": 10.53
+      },
+      {
+        "name": "Linux",
+        "views": 17316,
+        "percentage": 3.9
+      },
+      {
+        "name": "Other",
+        "views": 404,
+        "percentage": 0.09
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 264,
+    "error_rate": "0.0436%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 83,
+        "status": 499
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 59,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 49,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/product/breadcrumbs",
+        "failures": 48,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/instoreOrders/list",
+        "failures": 25,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 9513,
+    "payment_failures_declined": 25,
+    "payment_failures_approved": 17,
+    "active_carts": 42846
+  },
+  "customers": {
+    "first_time_buyers": 5532,
+    "returning_customers": 199,
+    "guest_checkouts": 0,
+    "registered_user_orders": 9513,
+    "total_registered_users": 9636,
+    "conversion_rate": "2.02%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "4.9s",
+      "fid": "183ms",
+      "cls": "0.07"
+    },
+    "mobile": {
+      "lcp": "5.3s",
+      "fid": "254ms",
+      "cls": "0.05"
+    }
+  }
+}
