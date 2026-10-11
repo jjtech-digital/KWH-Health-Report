@@ -3,65 +3,65 @@
   "year": 2026,
   "computed_at": "2026-10-11T12:59:59.999Z",
   "traffic": {
-    "total_views": 605217,
+    "total_views": 612236,
     "top_pages": [
       {
         "path": "/",
-        "views": 72411
+        "views": 72753
       },
       {
         "path": "/search",
-        "views": 8326
+        "views": 8367
       },
       {
         "path": "/blog/recipes/lemon-and-passionfruit-meringue-slab-pie",
-        "views": 3457
+        "views": 4293
       },
       {
         "path": "/checkout",
-        "views": 3142
+        "views": 3223
       },
       {
         "path": "/product/wolstead-bliss-soft-serve-and-slushy-maker-1-8l-white",
-        "views": 2881
+        "views": 3017
       }
     ],
     "browsers": [
       {
         "name": "iOS",
-        "views": 206973,
-        "percentage": 46.6
+        "views": 210207,
+        "percentage": 46.77
       },
       {
         "name": "Mac OS X",
-        "views": 93205,
-        "percentage": 20.99
+        "views": 93805,
+        "percentage": 20.87
       },
       {
         "name": "Android",
-        "views": 79502,
-        "percentage": 17.9
+        "views": 79914,
+        "percentage": 17.78
       },
       {
         "name": "Windows",
-        "views": 46754,
-        "percentage": 10.53
+        "views": 47977,
+        "percentage": 10.67
       },
       {
         "name": "Linux",
-        "views": 17316,
-        "percentage": 3.9
+        "views": 17166,
+        "percentage": 3.82
       },
       {
         "name": "Other",
-        "views": 404,
+        "views": 411,
         "percentage": 0.09
       }
     ]
   },
   "reliability": {
     "failed_requests": 264,
-    "error_rate": "0.0436%",
+    "error_rate": "0.0431%",
     "top_failed_pages": [
       {
         "path": "/frontastic/action/products/list",
@@ -102,7 +102,7 @@
     "guest_checkouts": 0,
     "registered_user_orders": 9513,
     "total_registered_users": 9636,
-    "conversion_rate": "2.02%"
+    "conversion_rate": "2.03%"
   },
   "web_vitals": {
     "desktop": {
