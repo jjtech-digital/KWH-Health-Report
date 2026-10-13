@@ -15,16 +15,16 @@ const modalContent = {
   "Payment Failures Declined": {
     title: "Payment Failures Declined",
     description:
-      "Orders where the payment was attempted but declined by the payment processor or bank. These are failed transactions that customers could not complete.",
+      "Payment completed, but the order was declined by Riskified (fraud screening). This covers two cases: payment processed, Riskified declined and refunded; and payment processed, Riskified declined and not refunded.",
     importance:
-      "High decline rates may indicate payment gateway issues, fraud detection problems, or customer payment method issues. Monitoring helps improve checkout success rates.",
+      "These are Riskified fraud decisions rather than checkout faults. A rise usually means stricter screening or a burst of risky orders. Any declined payment that is not yet refunded needs follow-up so the customer is not left charged.",
   },
   "Payment Failures Approved": {
     title: "Payment Failures Approved",
     description:
-      "Orders where the payment was initially approved but later failed during processing. This can occur due to insufficient funds, expired cards, or processing errors.",
+      "Payment processed, but the order was not placed even though Riskified did not decline it. This covers three cases: payment processed, Riskified approved, order not placed and not refunded; payment processed, Riskified approved, order not placed and refunded; and payment processed but the order never reached Riskified.",
     importance:
-      "These failures can impact customer experience and revenue. Understanding patterns helps optimize payment processing and reduce revenue loss from approved transactions that fail.",
+      "These failures happen on our side after the customer has paid, so they directly affect customer experience and revenue. Each one needs the payment refunded or the order completed, and patterns point to checkout or integration issues to fix.",
   },
   "Active Carts": {
     title: "Active Carts",
