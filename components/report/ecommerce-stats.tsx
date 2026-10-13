@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ShoppingBag, AlertTriangle, ShoppingCart, Info, X } from "lucide-react"
 import type { Ecommerce } from "@/lib/types/health-report"
 
@@ -8,30 +8,30 @@ const modalContent = {
   "Total Orders": {
     title: "Total Orders",
     description:
-      "The total number of completed orders processed during this week. This includes all successful transactions regardless of payment method or order value.",
+      "What we count: all orders created during the report week (Monday to Sunday), whatever the payment method or order value. Orders cancelled or refunded later are still counted.",
     importance:
       "A key indicator of business performance and sales volume. Tracking trends helps identify seasonal patterns, promotional effectiveness, and overall business growth.",
   },
   "Payment Failures Declined": {
     title: "Payment Failures Declined",
     description:
-      "Payment completed, but the order was declined by Riskified (fraud screening). This covers two cases: payment processed, Riskified declined and refunded; and payment processed, Riskified declined and not refunded.",
+      "What we count: payments that went through, but Riskified (fraud screening) then declined the order. Two cases: payment processed, Riskified declined, refunded; and payment processed, Riskified declined, not refunded.",
     importance:
-      "These are Riskified fraud decisions rather than checkout faults. A rise usually means stricter screening or a burst of risky orders. Any declined payment that is not yet refunded needs follow-up so the customer is not left charged.",
+      "These are Riskified's fraud decisions, not checkout faults. A rise usually means stricter screening or more risky orders. Any declined payment not yet refunded needs follow-up so the customer is not left out of pocket.",
   },
   "Payment Failures Approved": {
     title: "Payment Failures Approved",
     description:
-      "Payment processed, but the order was not placed even though Riskified did not decline it. This covers three cases: payment processed, Riskified approved, order not placed and not refunded; payment processed, Riskified approved, order not placed and refunded; and payment processed but the order never reached Riskified.",
+      "What we count: payments that went through, but no order was placed, even though Riskified did not decline it. Three cases: payment processed, Riskified approved, order not placed, not refunded; payment processed, Riskified approved, order not placed, refunded; and payment processed but the order never reached Riskified.",
     importance:
-      "These failures happen on our side after the customer has paid, so they directly affect customer experience and revenue. Each one needs the payment refunded or the order completed, and patterns point to checkout or integration issues to fix.",
+      "These happen after the customer has paid, so they hit customer experience and revenue directly. Each one needs the payment refunded or the order completed, and a pattern usually points to a checkout or integration issue.",
   },
   "Active Carts": {
     title: "Active Carts",
     description:
-      "The number of shopping carts that currently contain items but haven't been converted to orders. These represent potential sales in progress.",
+      "What we count: carts that were updated during the report week and had items in them at the time. This is weekly cart activity, not the number of carts open right now.",
     importance:
-      "High active cart numbers with low conversion may indicate checkout friction. Monitoring helps identify opportunities for cart abandonment recovery and checkout optimization.",
+      "High cart activity with low conversion may indicate checkout friction. Monitoring helps identify opportunities for cart abandonment recovery and checkout optimization.",
   },
 } as const
 
@@ -44,6 +44,15 @@ export function EcommerceStats({ ecommerce }: Readonly<{ ecommerce: Ecommerce }>
   } = ecommerce
 
   const [selectedModal, setSelectedModal] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!selectedModal) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelectedModal(null)
+    }
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [selectedModal])
 
   const stats = [
     {
@@ -81,7 +90,7 @@ export function EcommerceStats({ ecommerce }: Readonly<{ ecommerce: Ecommerce }>
   ]
 
   return (
-    <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat) => (
         <div
           key={stat.label}
@@ -113,9 +122,6 @@ export function EcommerceStats({ ecommerce }: Readonly<{ ecommerce: Ecommerce }>
         <div
           className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedModal(null)}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") setSelectedModal(null)
-          }}
           role="presentation"
         >
           <div
@@ -123,6 +129,7 @@ export function EcommerceStats({ ecommerce }: Readonly<{ ecommerce: Ecommerce }>
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
+            aria-labelledby="ecommerce-stat-modal-title"
           >
             <button
               type="button"
@@ -134,7 +141,10 @@ export function EcommerceStats({ ecommerce }: Readonly<{ ecommerce: Ecommerce }>
             </button>
 
             <div className="pr-8">
-              <h3 className="text-lg font-semibold mb-3 text-card-foreground">
+              <h3
+                id="ecommerce-stat-modal-title"
+                className="text-lg font-semibold mb-3 text-card-foreground"
+              >
                 {modalContent[selectedModal as keyof typeof modalContent].title}
               </h3>
               <div className="space-y-3">
