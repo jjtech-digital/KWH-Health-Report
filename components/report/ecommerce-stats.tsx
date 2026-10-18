@@ -15,7 +15,7 @@ const modalContent = {
   "Payment Failures Declined": {
     title: "Payment Failures Declined",
     description:
-      "What we count: payments that went through, but Riskified (fraud screening) then declined the order. Two cases: payment processed, Riskified declined, refunded; and payment processed, Riskified declined, not refunded.",
+      "What we count: payments that went through, but Riskified (fraud screening) then declined the order and it was not refunded.",
     importance:
       "These are Riskified's fraud decisions, not checkout faults. A rise usually means stricter screening or more risky orders. Any declined payment not yet refunded needs follow-up so the customer is not left out of pocket.",
   },
