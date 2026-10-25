@@ -1,0 +1,119 @@
+{
+  "week_number": 38,
+  "year": 2026,
+  "computed_at": "2026-10-26T12:59:59.999Z",
+  "traffic": {
+    "total_views": 534374,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 49962
+      },
+      {
+        "path": "/search",
+        "views": 6139
+      },
+      {
+        "path": "/brands/wolstead/wolstead-castelle",
+        "views": 4219
+      },
+      {
+        "path": "/checkout",
+        "views": 4166
+      },
+      {
+        "path": "/flash-sale",
+        "views": 4066
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Chrome",
+        "views": 156429,
+        "percentage": 38.23
+      },
+      {
+        "name": "Safari",
+        "views": 170686,
+        "percentage": 41.71
+      },
+      {
+        "name": "Edge",
+        "views": 14701,
+        "percentage": 3.59
+      },
+      {
+        "name": "Firefox",
+        "views": 8989,
+        "percentage": 2.2
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 8235,
+        "percentage": 2.01
+      },
+      {
+        "name": "Other",
+        "views": 50192,
+        "percentage": 12.26
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 397,
+    "error_rate": "0.0743%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 167,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 87,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 68,
+        "status": 502
+      },
+      {
+        "path": "/frontastic/action/instoreOrders/list",
+        "failures": 42,
+        "status": 499
+      },
+      {
+        "path": "/frontastic/action/product/breadcrumbs",
+        "failures": 33,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 10000,
+    "payment_failures_declined": 1,
+    "payment_failures_approved": 4,
+    "active_carts": 46388
+  },
+  "customers": {
+    "first_time_buyers": 443,
+    "returning_customers": 265,
+    "guest_checkouts": 0,
+    "registered_user_orders": 10000,
+    "total_registered_users": 10000,
+    "conversion_rate": "2.43%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "4.4s",
+      "fid": "212ms",
+      "cls": "0.07"
+    },
+    "mobile": {
+      "lcp": "4.7s",
+      "fid": "277ms",
+      "cls": "0.03"
+    }
+  }
+}
