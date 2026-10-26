@@ -91,17 +91,17 @@
     ]
   },
   "ecommerce": {
-    "total_orders": 10000,
+    "total_orders": 10717,
     "payment_failures_declined": 1,
     "payment_failures_approved": 4,
-    "active_carts": 46388
+    "active_carts": 47377
   },
   "customers": {
-    "first_time_buyers": 443,
-    "returning_customers": 265,
-    "guest_checkouts": 0,
-    "registered_user_orders": 10000,
-    "total_registered_users": 10000,
+    "first_time_buyers": 5994,
+    "returning_customers": 292,
+    "guest_checkouts": 8260,
+    "registered_user_orders": 2457,
+    "total_registered_users": 14154,
     "conversion_rate": "2.43%"
   },
   "web_vitals": {
