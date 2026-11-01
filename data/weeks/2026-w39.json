@@ -1,0 +1,119 @@
+{
+  "week_number": 39,
+  "year": 2026,
+  "computed_at": "2026-11-01T12:59:59.999Z",
+  "traffic": {
+    "total_views": 569311,
+    "top_pages": [
+      {
+        "path": "/",
+        "views": 49963
+      },
+      {
+        "path": "/offers",
+        "views": 12395
+      },
+      {
+        "path": "/search",
+        "views": 6291
+      },
+      {
+        "path": "/clearance-specials",
+        "views": 5854
+      },
+      {
+        "path": "/checkout",
+        "views": 4337
+      }
+    ],
+    "browsers": [
+      {
+        "name": "Safari",
+        "views": 184410,
+        "percentage": 42.66
+      },
+      {
+        "name": "Chrome",
+        "views": 164330,
+        "percentage": 38.02
+      },
+      {
+        "name": "Other",
+        "views": 50648,
+        "percentage": 11.72
+      },
+      {
+        "name": "Edge",
+        "views": 14801,
+        "percentage": 3.42
+      },
+      {
+        "name": "Samsung Internet",
+        "views": 9333,
+        "percentage": 2.16
+      },
+      {
+        "name": "Firefox",
+        "views": 8728,
+        "percentage": 2.02
+      }
+    ]
+  },
+  "reliability": {
+    "failed_requests": 377,
+    "error_rate": "0.0662%",
+    "top_failed_pages": [
+      {
+        "path": "/frontastic/action/cart/details",
+        "failures": 162,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/algolia-events",
+        "failures": 87,
+        "status": 400
+      },
+      {
+        "path": "/frontastic/action/products/list",
+        "failures": 66,
+        "status": 499
+      },
+      {
+        "path": "/frontastic/action/product/breadcrumbs",
+        "failures": 33,
+        "status": 500
+      },
+      {
+        "path": "/frontastic/action/products/quickSearch",
+        "failures": 29,
+        "status": 500
+      }
+    ]
+  },
+  "ecommerce": {
+    "total_orders": 12628,
+    "payment_failures_declined": 3,
+    "payment_failures_approved": 5,
+    "active_carts": 53376
+  },
+  "customers": {
+    "first_time_buyers": 7028,
+    "returning_customers": 334,
+    "guest_checkouts": 9629,
+    "registered_user_orders": 2999,
+    "total_registered_users": 11585,
+    "conversion_rate": "2.63%"
+  },
+  "web_vitals": {
+    "desktop": {
+      "lcp": "3.9s",
+      "fid": "223ms",
+      "cls": "0.10"
+    },
+    "mobile": {
+      "lcp": "4.1s",
+      "fid": "286ms",
+      "cls": "0.04"
+    }
+  }
+}
